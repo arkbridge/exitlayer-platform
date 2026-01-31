@@ -38,15 +38,15 @@ function LoginForm() {
   }
 
   return (
-    <div className="bg-gray-900 rounded-2xl p-8 shadow-xl border border-gray-800">
+    <div className="bg-white rounded-xl p-8 border border-[#e5e5e5]">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-        <p className="text-gray-400">Sign in to access your ExitLayer dashboard</p>
+        <h1 className="text-3xl font-serif font-medium text-[#1a1a1a] mb-2">Welcome Back</h1>
+        <p className="text-[#666]">Sign in to access your dashboard</p>
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-6">
+      <form onSubmit={handleLogin} className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+          <label htmlFor="email" className="block text-sm font-medium text-[#1a1a1a] mb-2">
             Email
           </label>
           <input
@@ -55,13 +55,13 @@ function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-[#f8f8f6] border border-[#e5e5e5] rounded-lg text-[#1a1a1a] placeholder-[#999] focus:outline-none focus:ring-2 focus:ring-[#2d4a2d]/20 focus:border-[#2d4a2d] transition-colors"
             placeholder="you@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+          <label htmlFor="password" className="block text-sm font-medium text-[#1a1a1a] mb-2">
             Password
           </label>
           <input
@@ -70,29 +70,29 @@ function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-[#f8f8f6] border border-[#e5e5e5] rounded-lg text-[#1a1a1a] placeholder-[#999] focus:outline-none focus:ring-2 focus:ring-[#2d4a2d]/20 focus:border-[#2d4a2d] transition-colors"
             placeholder="••••••••"
           />
         </div>
 
         {error && (
-          <div className="p-3 bg-red-500/10 border border-red-500/50 rounded-lg">
-            <p className="text-red-400 text-sm">{error}</p>
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600 text-sm">{error}</p>
           </div>
         )}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white font-medium rounded-lg transition-colors"
+          className="w-full py-3 px-4 bg-[#2d4a2d] hover:bg-[#1a2e1a] disabled:bg-[#2d4a2d]/50 text-white font-medium rounded-full transition-colors"
         >
           {loading ? 'Signing in...' : 'Sign In'}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-gray-400">
+      <p className="mt-6 text-center text-[#666]">
         Don't have an account?{' '}
-        <Link href="/signup" className="text-blue-400 hover:text-blue-300">
+        <Link href="/signup" className="text-[#2d4a2d] hover:text-[#1a2e1a] font-medium">
           Sign up
         </Link>
       </p>
@@ -103,13 +103,13 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="bg-gray-900 rounded-2xl p-8 shadow-xl border border-gray-800 animate-pulse">
-        <div className="h-8 bg-gray-800 rounded mb-4 w-48 mx-auto" />
-        <div className="h-4 bg-gray-800 rounded mb-8 w-64 mx-auto" />
-        <div className="space-y-6">
-          <div className="h-12 bg-gray-800 rounded" />
-          <div className="h-12 bg-gray-800 rounded" />
-          <div className="h-12 bg-gray-800 rounded" />
+      <div className="bg-white rounded-xl p-8 border border-[#e5e5e5] animate-pulse">
+        <div className="h-8 bg-[#f0f0f0] rounded mb-4 w-48 mx-auto" />
+        <div className="h-4 bg-[#f0f0f0] rounded mb-8 w-64 mx-auto" />
+        <div className="space-y-5">
+          <div className="h-12 bg-[#f0f0f0] rounded-lg" />
+          <div className="h-12 bg-[#f0f0f0] rounded-lg" />
+          <div className="h-12 bg-[#f0f0f0] rounded-full" />
         </div>
       </div>
     }>

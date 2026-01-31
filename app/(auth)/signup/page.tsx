@@ -53,15 +53,15 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="bg-gray-900 rounded-2xl p-8 shadow-xl border border-gray-800">
+    <div className="bg-white rounded-xl p-8 border border-[#e5e5e5]">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Get Started</h1>
-        <p className="text-gray-400">Create your account to begin your audit</p>
+        <h1 className="text-3xl font-serif font-medium text-[#1a1a1a] mb-2">Get Started</h1>
+        <p className="text-[#666]">Create your account to begin the diagnostic</p>
       </div>
 
-      <form onSubmit={handleSignup} className="space-y-6">
+      <form onSubmit={handleSignup} className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+          <label htmlFor="email" className="block text-sm font-medium text-[#1a1a1a] mb-2">
             Email
           </label>
           <input
@@ -70,13 +70,13 @@ export default function SignupPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-[#f8f8f6] border border-[#e5e5e5] rounded-lg text-[#1a1a1a] placeholder-[#999] focus:outline-none focus:ring-2 focus:ring-[#2d4a2d]/20 focus:border-[#2d4a2d] transition-colors"
             placeholder="you@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+          <label htmlFor="password" className="block text-sm font-medium text-[#1a1a1a] mb-2">
             Password
           </label>
           <input
@@ -85,13 +85,13 @@ export default function SignupPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-[#f8f8f6] border border-[#e5e5e5] rounded-lg text-[#1a1a1a] placeholder-[#999] focus:outline-none focus:ring-2 focus:ring-[#2d4a2d]/20 focus:border-[#2d4a2d] transition-colors"
             placeholder="••••••••"
           />
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-[#1a1a1a] mb-2">
             Confirm Password
           </label>
           <input
@@ -100,31 +100,35 @@ export default function SignupPage() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-[#f8f8f6] border border-[#e5e5e5] rounded-lg text-[#1a1a1a] placeholder-[#999] focus:outline-none focus:ring-2 focus:ring-[#2d4a2d]/20 focus:border-[#2d4a2d] transition-colors"
             placeholder="••••••••"
           />
         </div>
 
         {error && (
-          <div className="p-3 bg-red-500/10 border border-red-500/50 rounded-lg">
-            <p className="text-red-400 text-sm">{error}</p>
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600 text-sm">{error}</p>
           </div>
         )}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white font-medium rounded-lg transition-colors"
+          className="w-full py-3 px-4 bg-[#2d4a2d] hover:bg-[#1a2e1a] disabled:bg-[#2d4a2d]/50 text-white font-medium rounded-full transition-colors"
         >
           {loading ? 'Creating account...' : 'Create Account'}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-gray-400">
+      <p className="mt-6 text-center text-[#666]">
         Already have an account?{' '}
-        <Link href="/login" className="text-blue-400 hover:text-blue-300">
+        <Link href="/login" className="text-[#2d4a2d] hover:text-[#1a2e1a] font-medium">
           Sign in
         </Link>
+      </p>
+
+      <p className="mt-4 text-center text-[#999] text-xs">
+        ~45 minutes to complete the diagnostic
       </p>
     </div>
   )

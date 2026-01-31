@@ -4,20 +4,20 @@ import Link from 'next/link'
 
 // Helper to get score color
 function getScoreColor(score: number): string {
-  if (score >= 80) return '#22c55e' // green-500
-  if (score >= 60) return '#eab308' // yellow-500
-  if (score >= 40) return '#f97316' // orange-500
-  return '#ef4444' // red-500
+  if (score >= 80) return '#2d4a2d' // green (thesis color)
+  if (score >= 60) return '#b59f3b' // muted gold
+  if (score >= 40) return '#c77d3e' // muted orange
+  return '#a85454' // muted red
 }
 
 // Pipeline stages
 const PIPELINE_STAGES = [
-  { id: 'submitted', label: 'Submitted', icon: '📝' },
-  { id: 'review', label: 'In Review', icon: '🔍' },
-  { id: 'call_scheduled', label: 'Call Scheduled', icon: '📅' },
-  { id: 'call_complete', label: 'Call Complete', icon: '✅' },
-  { id: 'building', label: 'Building', icon: '🔧' },
-  { id: 'complete', label: 'Complete', icon: '🚀' },
+  { id: 'submitted', label: 'Submitted', icon: '1' },
+  { id: 'review', label: 'In Review', icon: '2' },
+  { id: 'call_scheduled', label: 'Call Scheduled', icon: '3' },
+  { id: 'call_complete', label: 'Call Complete', icon: '4' },
+  { id: 'building', label: 'Building', icon: '5' },
+  { id: 'complete', label: 'Complete', icon: '6' },
 ]
 
 export default async function DashboardPage() {
@@ -59,20 +59,18 @@ export default async function DashboardPage() {
   // If no submission, show prompt to take questionnaire
   if (!submission) {
     return (
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-2xl mx-auto px-6 py-16">
         <div className="text-center">
-          <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center">
-            <span className="text-4xl">📋</span>
-          </div>
-          <h1 className="text-3xl font-bold text-white mb-4">
+          <div className="text-6xl mb-6">📋</div>
+          <h1 className="text-3xl font-serif font-medium text-[#1a1a1a] mb-4">
             Welcome to ExitLayer
           </h1>
-          <p className="text-gray-400 text-lg mb-8 max-w-md mx-auto">
+          <p className="text-[#666] text-lg mb-8 max-w-md mx-auto">
             Complete your agency diagnostic to unlock your personalized transformation roadmap.
           </p>
           <Link
             href="/questionnaire"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[#2d4a2d] hover:bg-[#1a2e1a] text-white font-medium rounded-full transition-colors"
           >
             Start Your Diagnostic
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,32 +88,89 @@ export default async function DashboardPage() {
   const analysis = submission.analysis || {}
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-8">
+    <div className="max-w-4xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">
-          Your ExitLayer Dashboard
+        <h1 className="text-3xl font-serif font-medium text-[#1a1a1a] mb-2">
+          Your Dashboard
         </h1>
-        <p className="text-gray-400">
+        <p className="text-[#666]">
           Track your transformation journey and access your diagnostic results.
         </p>
+      </div>
+
+      {/* Documents Required - Front and Center */}
+      <div className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden mb-8">
+        <div className="p-6 border-b border-[#e5e5e5] flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#c77d3e]/10 flex items-center justify-center">
+              <svg className="w-5 h-5 text-[#c77d3e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-lg font-serif font-medium text-[#1a1a1a]">Action Required: Upload Documents</h3>
+              <p className="text-[#666] text-sm">We need these before scheduling your discovery call</p>
+            </div>
+          </div>
+          <span className="text-xs font-medium text-[#c77d3e] bg-[#c77d3e]/10 px-3 py-1 rounded-full">0 of 4 uploaded</span>
+        </div>
+
+        <div className="p-6 grid md:grid-cols-2 gap-4">
+          {[
+            { name: 'Service Offerings Document', desc: 'Your current services, pricing, and packages', icon: '📋', uploaded: false },
+            { name: 'Sample Client Deliverable', desc: 'A recent project or report you delivered', icon: '📄', uploaded: false },
+            { name: 'Team Structure / Org Chart', desc: 'Who does what on your team', icon: '👥', uploaded: false },
+            { name: 'Current SOPs (if any)', desc: 'Any documented processes you have', icon: '📝', uploaded: false },
+          ].map((doc, i) => (
+            <div key={i} className={`flex items-center gap-4 p-4 rounded-lg border ${doc.uploaded ? 'bg-[#2d4a2d]/5 border-[#2d4a2d]/20' : 'bg-[#f8f8f6] border-[#e5e5e5]'}`}>
+              <span className="text-2xl">{doc.icon}</span>
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-[#1a1a1a] truncate">{doc.name}</div>
+                <div className="text-sm text-[#666] truncate">{doc.desc}</div>
+              </div>
+              {doc.uploaded ? (
+                <svg className="w-5 h-5 text-[#2d4a2d] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <span className="text-xs text-[#999] flex-shrink-0">Missing</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="p-6 bg-[#f8f8f6] border-t border-[#e5e5e5] flex items-center justify-between">
+          <p className="text-[#666] text-sm">
+            These help us prepare a tailored action plan for your discovery call.
+          </p>
+          <Link
+            href="/assets"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#2d4a2d] text-white font-medium rounded-full hover:bg-[#1a2e1a] transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+            Upload Documents
+          </Link>
+        </div>
       </div>
 
       {/* Score Overview */}
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         {/* Overall Score */}
-        <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
-          <div className="text-gray-400 text-sm font-medium mb-2">Overall Score</div>
+        <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
+          <div className="text-[#999] text-sm mb-2">Overall Score</div>
           <div className="flex items-end gap-2">
             <span
-              className="text-5xl font-bold"
+              className="text-5xl font-serif font-medium"
               style={{ color: getScoreColor(score) }}
             >
               {score}
             </span>
-            <span className="text-gray-500 text-xl mb-1">/100</span>
+            <span className="text-[#ccc] text-xl mb-1">/100</span>
           </div>
-          <div className="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+          <div className="mt-4 h-2 bg-[#e5e5e5] rounded-full overflow-hidden">
             <div
               className="h-full rounded-full transition-all"
               style={{ width: `${score}%`, backgroundColor: getScoreColor(score) }}
@@ -124,31 +179,31 @@ export default async function DashboardPage() {
         </div>
 
         {/* Owner Tax */}
-        <div className="bg-gradient-to-br from-red-950 to-gray-900 rounded-2xl p-6 border border-red-900/50">
-          <div className="text-red-300 text-sm font-medium mb-2">Annual Owner Tax</div>
-          <div className="text-4xl font-bold text-white">
+        <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
+          <div className="text-[#a85454] text-sm mb-2">Annual Owner Tax</div>
+          <div className="text-4xl font-serif font-medium text-[#1a1a1a]">
             ${Math.round((financialMetrics.ownerHourlyValue || 0) * (submission.questionnaire_data?.wasted_hours_week || 10) * 52 / 1000)}K
           </div>
-          <p className="text-red-200/60 text-sm mt-2">
+          <p className="text-[#999] text-sm mt-2">
             Lost to tasks below your pay grade
           </p>
         </div>
 
         {/* Exit Value Gap */}
-        <div className="bg-gradient-to-br from-blue-950 to-gray-900 rounded-2xl p-6 border border-blue-900/50">
-          <div className="text-blue-300 text-sm font-medium mb-2">Exit Value Gap</div>
-          <div className="text-4xl font-bold text-white">
+        <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
+          <div className="text-[#2d4a2d] text-sm mb-2">Exit Value Gap</div>
+          <div className="text-4xl font-serif font-medium text-[#1a1a1a]">
             ${((financialMetrics.valueGap || 0) / 1000000).toFixed(1)}M
           </div>
-          <p className="text-blue-200/60 text-sm mt-2">
+          <p className="text-[#999] text-sm mt-2">
             {financialMetrics.currentExitMultiple || 2}x → 5x potential
           </p>
         </div>
       </div>
 
       {/* Dimension Scores */}
-      <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800 mb-8">
-        <h2 className="text-lg font-semibold text-white mb-4">Dimension Breakdown</h2>
+      <div className="bg-white rounded-xl p-6 border border-[#e5e5e5] mb-8">
+        <h2 className="text-lg font-serif font-medium text-[#1a1a1a] mb-4">Dimension Breakdown</h2>
         <div className="grid grid-cols-5 gap-4">
           {[
             { key: 'leverage', label: 'Leverage', description: 'Owner time independence' },
@@ -159,14 +214,14 @@ export default async function DashboardPage() {
           ].map((dim) => (
             <div key={dim.key} className="text-center">
               <div
-                className="text-3xl font-bold mb-1"
+                className="text-3xl font-serif font-medium mb-1"
                 style={{ color: getScoreColor(dimensions[dim.key] || 0) }}
               >
                 {dimensions[dim.key] || 0}
               </div>
-              <div className="text-white font-medium text-sm">{dim.label}</div>
-              <div className="text-gray-500 text-xs">{dim.description}</div>
-              <div className="mt-2 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+              <div className="text-[#1a1a1a] font-medium text-sm">{dim.label}</div>
+              <div className="text-[#999] text-xs">{dim.description}</div>
+              <div className="mt-2 h-1.5 bg-[#e5e5e5] rounded-full overflow-hidden">
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -181,8 +236,8 @@ export default async function DashboardPage() {
       </div>
 
       {/* Pipeline Progress */}
-      <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800 mb-8">
-        <h2 className="text-lg font-semibold text-white mb-6">Your Journey</h2>
+      <div className="bg-white rounded-xl p-6 border border-[#e5e5e5] mb-8">
+        <h2 className="text-lg font-serif font-medium text-[#1a1a1a] mb-6">Your Journey</h2>
         <div className="flex items-center justify-between">
           {PIPELINE_STAGES.map((stage, index) => {
             const isComplete = index <= currentStageIndex
@@ -193,33 +248,33 @@ export default async function DashboardPage() {
               <div key={stage.id} className="flex items-center flex-1">
                 <div className="flex flex-col items-center">
                   <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl transition-all ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
                       isCurrent
-                        ? 'bg-blue-600 ring-4 ring-blue-600/30'
+                        ? 'bg-[#2d4a2d] text-white ring-4 ring-[#2d4a2d]/20'
                         : isComplete
-                        ? 'bg-green-600'
-                        : 'bg-gray-800'
+                        ? 'bg-[#2d4a2d] text-white'
+                        : 'bg-[#e5e5e5] text-[#999]'
                     }`}
                   >
                     {stage.icon}
                   </div>
                   <span
                     className={`mt-2 text-xs font-medium ${
-                      isCurrent ? 'text-blue-400' : isComplete ? 'text-green-400' : 'text-gray-500'
+                      isCurrent ? 'text-[#2d4a2d]' : isComplete ? 'text-[#2d4a2d]' : 'text-[#999]'
                     }`}
                   >
                     {stage.label}
                   </span>
                   {stageData?.completed_at && (
-                    <span className="text-[10px] text-gray-600">
+                    <span className="text-[10px] text-[#ccc]">
                       {new Date(stageData.completed_at).toLocaleDateString()}
                     </span>
                   )}
                 </div>
                 {index < PIPELINE_STAGES.length - 1 && (
                   <div
-                    className={`flex-1 h-1 mx-2 rounded ${
-                      index < currentStageIndex ? 'bg-green-600' : 'bg-gray-800'
+                    className={`flex-1 h-0.5 mx-2 rounded ${
+                      index < currentStageIndex ? 'bg-[#2d4a2d]' : 'bg-[#e5e5e5]'
                     }`}
                   />
                 )}
@@ -232,30 +287,30 @@ export default async function DashboardPage() {
       {/* Key Insights & CTA */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Top Opportunity */}
-        <div className="bg-gradient-to-br from-emerald-950 to-gray-900 rounded-2xl p-6 border border-emerald-900/50">
+        <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
           <div className="flex items-center gap-2 mb-3">
-            <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-[#2d4a2d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
-            <h3 className="text-lg font-semibold text-white">Highest Opportunity</h3>
+            <h3 className="text-lg font-medium text-[#1a1a1a]">Highest Opportunity</h3>
           </div>
-          <p className="text-emerald-200 font-medium mb-2">
+          <p className="text-[#2d4a2d] font-medium mb-2">
             {analysis.highestOpportunity?.dimension || 'Leverage'}
           </p>
-          <p className="text-emerald-200/70 text-sm">
+          <p className="text-[#666] text-sm">
             {analysis.highestOpportunity?.description || 'Focus on reducing owner dependency to unlock growth.'}
           </p>
         </div>
 
         {/* Book a Call */}
-        <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
-          <h3 className="text-lg font-semibold text-white mb-3">Ready for the Next Step?</h3>
-          <p className="text-gray-400 text-sm mb-4">
+        <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
+          <h3 className="text-lg font-medium text-[#1a1a1a] mb-3">Ready for the Next Step?</h3>
+          <p className="text-[#666] text-sm mb-4">
             Book your discovery call to map out your personalized transformation plan.
           </p>
           <a
-            href="mailto:michael@exitlayer.io?subject=ExitLayer%20Discovery%20Call%20-%20${profile?.company_name || 'My Agency'}"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+            href={`mailto:michael@exitlayer.io?subject=ExitLayer%20Discovery%20Call%20-%20${encodeURIComponent(profile?.company_name || 'My Agency')}`}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#2d4a2d] hover:bg-[#1a2e1a] text-white font-medium rounded-full transition-colors"
           >
             Book a Call
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -269,7 +324,7 @@ export default async function DashboardPage() {
       <div className="mt-8 text-center">
         <Link
           href="/assets"
-          className="text-gray-400 hover:text-white text-sm inline-flex items-center gap-2 transition-colors"
+          className="text-[#666] hover:text-[#1a1a1a] text-sm inline-flex items-center gap-2 transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />

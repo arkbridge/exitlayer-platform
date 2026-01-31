@@ -338,29 +338,21 @@ export default function QuestionnaireForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100/50">
+    <div className="min-h-screen bg-[#f8f8f6]">
       {/* Top progress dashboard header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/50 sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto px-6 py-4">
+      <header className="bg-[#f8f8f6] border-b border-[#e5e5e5] sticky top-0 z-20">
+        <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center shadow-lg shadow-slate-900/20">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <div>
-                <h1 className="font-semibold text-slate-900 tracking-tight">Agency Diagnostic</h1>
-                <p className="text-xs text-slate-500">Building your transformation roadmap</p>
-              </div>
+              <h1 className="text-lg font-medium text-[#1a1a1a] tracking-tight">Agency Diagnostic</h1>
             </div>
 
             {/* Save status indicator */}
             <div className="flex items-center gap-4">
               <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                 saveStatus === 'saved'
-                  ? 'bg-emerald-50 text-emerald-600'
-                  : 'bg-slate-100 text-slate-500'
+                  ? 'bg-[#2d4a2d]/10 text-[#2d4a2d]'
+                  : 'bg-[#e5e5e5] text-[#666]'
               }`}>
                 {saveStatus === 'saved' ? (
                   <>
@@ -394,40 +386,40 @@ export default function QuestionnaireForm() {
                 <button
                   key={i}
                   onClick={() => handleSectionJump(i)}
-                  className={`p-3 rounded-xl border-2 transition-all text-left ${
+                  className={`p-3 rounded-xl border transition-all text-left ${
                     isActive
-                      ? 'border-slate-900 bg-slate-900 shadow-lg shadow-slate-900/20'
+                      ? 'border-[#2d4a2d] bg-[#2d4a2d]'
                       : isComplete
-                      ? 'border-emerald-200 bg-emerald-50 hover:border-emerald-300'
+                      ? 'border-[#2d4a2d]/30 bg-[#2d4a2d]/5 hover:border-[#2d4a2d]/50'
                       : sectionProgress.answered > 0
-                      ? 'border-blue-200 bg-blue-50 hover:border-blue-300'
-                      : 'border-slate-100 bg-white hover:border-slate-200 hover:bg-slate-50'
+                      ? 'border-[#e5e5e5] bg-white hover:border-[#ccc]'
+                      : 'border-[#e5e5e5] bg-white hover:border-[#ccc]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className={`text-xs font-semibold truncate ${
-                      isActive ? 'text-white' : isComplete ? 'text-emerald-700' : 'text-slate-500'
+                    <span className={`text-xs font-medium truncate ${
+                      isActive ? 'text-white' : isComplete ? 'text-[#2d4a2d]' : 'text-[#666]'
                     }`}>
                       {sectionName}
                     </span>
                     {isComplete && (
-                      <svg className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-3.5 h-3.5 text-[#2d4a2d] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                     )}
                   </div>
                   <div className={`h-1.5 rounded-full overflow-hidden ${
-                    isActive ? 'bg-white/20' : 'bg-slate-100'
+                    isActive ? 'bg-white/20' : 'bg-[#e5e5e5]'
                   }`}>
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
-                        isActive ? 'bg-white' : isComplete ? 'bg-emerald-500' : 'bg-blue-500'
+                        isActive ? 'bg-white' : 'bg-[#2d4a2d]'
                       }`}
                       style={{ width: `${sectionProgress.percentage}%` }}
                     />
                   </div>
                   <span className={`text-[10px] mt-1.5 block ${
-                    isActive ? 'text-white/60' : 'text-slate-400'
+                    isActive ? 'text-white/60' : 'text-[#999]'
                   }`}>
                     {sectionProgress.answered}/{sectionProgress.total}
                   </span>
@@ -442,25 +434,24 @@ export default function QuestionnaireForm() {
       <main className="max-w-2xl mx-auto px-6 py-12">
         {showSectionIntro ? (
           /* Section Intro Screen */
-          <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800" />
+          <div className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden">
             <div className="p-10 text-center">
               <div className="text-6xl mb-6">{sectionIntros[currentQ.sectionIndex]?.emoji || '📋'}</div>
-              <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+              <div className="text-xs text-[#999] uppercase tracking-wider mb-2">
                 Section {currentQ.sectionIndex + 1} of {questionSections.length}
               </div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">
+              <h2 className="text-3xl font-serif font-medium text-[#1a1a1a] mb-4">
                 {sectionIntros[currentQ.sectionIndex]?.headline || currentQ.sectionTitle}
               </h2>
-              <p className="text-lg text-slate-500 mb-8 max-w-md mx-auto leading-relaxed">
+              <p className="text-lg text-[#666] mb-8 max-w-md mx-auto leading-relaxed">
                 {sectionIntros[currentQ.sectionIndex]?.context}
               </p>
-              <div className="text-sm text-slate-400 mb-8">
+              <div className="text-sm text-[#999] mb-8">
                 {currentQ.totalInSection} questions in this section
               </div>
               <button
                 onClick={handleNext}
-                className="px-10 py-4 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-2xl font-semibold hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg shadow-slate-900/20 inline-flex items-center gap-2"
+                className="px-10 py-4 bg-[#2d4a2d] text-white rounded-full font-medium hover:bg-[#1a2e1a] transition-all inline-flex items-center gap-2"
               >
                 Let's Go
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -471,26 +462,23 @@ export default function QuestionnaireForm() {
           </div>
         ) : (
           /* Question Card */
-          <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
-            {/* Card header with gradient accent */}
-            <div className="h-1 bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800" />
-
+          <div className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden">
             <div className="p-10">
               {/* Question indicator */}
               <div className="flex items-center gap-4 mb-8">
-                <span className="w-10 h-10 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white flex items-center justify-center text-sm font-bold shadow-lg shadow-slate-900/20">
+                <span className="w-10 h-10 rounded-full bg-[#2d4a2d] text-white flex items-center justify-center text-sm font-medium">
                   {safeIndex + 1}
                 </span>
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <span className="text-xs text-[#999] uppercase tracking-wider">
                       {currentQ.sectionTitle} &middot; Q{currentQ.questionIndexInSection + 1} of {currentQ.totalInSection}
                     </span>
-                    <span className="text-xs font-semibold text-slate-600">{progress}%</span>
+                    <span className="text-xs font-medium text-[#666]">{progress}%</span>
                   </div>
-                  <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-[#e5e5e5] rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-slate-700 to-slate-500 rounded-full transition-all duration-500"
+                      className="h-full bg-[#2d4a2d] rounded-full transition-all duration-500"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
@@ -498,12 +486,12 @@ export default function QuestionnaireForm() {
               </div>
 
               {/* Question */}
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3 tracking-tight leading-tight">
+              <h2 className="text-2xl md:text-3xl font-serif font-medium text-[#1a1a1a] mb-3 leading-tight">
                 {currentQ.question.question}
                 {currentQ.question.required && <span className="text-red-500 ml-1">*</span>}
               </h2>
               {currentQ.question.helpText && (
-                <p className="text-lg text-slate-500 mb-10 leading-relaxed">{currentQ.question.helpText}</p>
+                <p className="text-lg text-[#666] mb-10 leading-relaxed">{currentQ.question.helpText}</p>
               )}
               {!currentQ.question.helpText && <div className="mb-10" />}
 
@@ -520,11 +508,11 @@ export default function QuestionnaireForm() {
               )}
 
             {/* Navigation */}
-            <div className="flex items-center justify-between mt-10 pt-8 border-t border-slate-100">
+            <div className="flex items-center justify-between mt-10 pt-8 border-t border-[#e5e5e5]">
               <button
                 onClick={handlePrevious}
                 disabled={safeIndex === 0}
-                className="flex items-center gap-2 px-5 py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-xl font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-5 py-3 text-[#666] hover:text-[#1a1a1a] hover:bg-[#f0f0f0] rounded-full font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -536,7 +524,7 @@ export default function QuestionnaireForm() {
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="px-10 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-2xl font-semibold hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg shadow-emerald-200 flex items-center gap-2 disabled:opacity-50"
+                  className="px-10 py-4 bg-[#2d4a2d] text-white rounded-full font-medium hover:bg-[#1a2e1a] transition-all flex items-center gap-2 disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>
@@ -558,7 +546,7 @@ export default function QuestionnaireForm() {
               ) : (
                 <button
                   onClick={handleNext}
-                  className="px-10 py-4 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-2xl font-semibold hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg shadow-slate-900/20 flex items-center gap-2"
+                  className="px-10 py-4 bg-[#2d4a2d] text-white rounded-full font-medium hover:bg-[#1a2e1a] transition-all flex items-center gap-2"
                 >
                   Continue
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -573,11 +561,11 @@ export default function QuestionnaireForm() {
 
         {/* Keyboard hint & time estimate */}
         <div className="flex items-center justify-center gap-6 mt-8">
-          <span className="text-sm text-slate-400">
-            Press <kbd className="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-mono shadow-sm">Enter</kbd> to continue
+          <span className="text-sm text-[#999]">
+            Press <kbd className="px-2 py-1 bg-white border border-[#e5e5e5] rounded-lg text-xs font-mono">Enter</kbd> to continue
           </span>
-          <span className="text-slate-300">&bull;</span>
-          <span className="text-sm text-slate-400">About {remainingMinutes} minute{remainingMinutes !== 1 ? 's' : ''} remaining</span>
+          <span className="text-[#ccc]">&bull;</span>
+          <span className="text-sm text-[#999]">About {remainingMinutes} minute{remainingMinutes !== 1 ? 's' : ''} remaining</span>
         </div>
       </main>
     </div>
@@ -589,7 +577,7 @@ function QuestionInput({ question, value, onChange }: {
   value: any;
   onChange: (value: any) => void;
 }) {
-  const baseInputClasses = "w-full text-lg font-medium px-6 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5 transition-all placeholder:text-slate-300 placeholder:font-normal";
+  const baseInputClasses = "w-full text-lg px-6 py-5 bg-[#f8f8f6] border border-[#e5e5e5] rounded-lg focus:border-[#2d4a2d] focus:bg-white focus:ring-2 focus:ring-[#2d4a2d]/10 transition-all placeholder:text-[#999]";
 
   if (question.type === 'text' || question.type === 'number') {
     const displayValue = question.type === 'number' && value
@@ -1431,10 +1419,62 @@ function ResultsDisplay({ score, formData, portalUrl }: { score: ExitLayerScore;
           <p className="text-emerald-800">{score.analysis.highestOpportunity.description}</p>
         </div>
 
+        {/* Documents Required Section */}
+        <div className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden">
+          <div className="p-6 border-b border-[#e5e5e5]">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-full bg-[#2d4a2d]/10 flex items-center justify-center">
+                <svg className="w-5 h-5 text-[#2d4a2d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-lg font-serif font-medium text-[#1a1a1a]">Before Your Discovery Call</h3>
+                <p className="text-[#666] text-sm">Upload these documents so we can prepare a tailored action plan</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 space-y-4">
+            {[
+              { name: 'Service Offerings Document', desc: 'Your current services, pricing, and packages', icon: '📋' },
+              { name: 'Sample Client Deliverable', desc: 'A recent project or report you delivered', icon: '📄' },
+              { name: 'Team Structure / Org Chart', desc: 'Who does what on your team', icon: '👥' },
+              { name: 'Current SOPs (if any)', desc: 'Any documented processes you have', icon: '📝' },
+            ].map((doc, i) => (
+              <div key={i} className="flex items-center gap-4 p-4 bg-[#f8f8f6] rounded-lg border border-[#e5e5e5]">
+                <span className="text-2xl">{doc.icon}</span>
+                <div className="flex-1">
+                  <div className="font-medium text-[#1a1a1a]">{doc.name}</div>
+                  <div className="text-sm text-[#666]">{doc.desc}</div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[#999] bg-white px-2 py-1 rounded border border-[#e5e5e5]">Not uploaded</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="p-6 bg-[#f8f8f6] border-t border-[#e5e5e5]">
+            <a
+              href="/assets"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#2d4a2d] text-white font-medium rounded-full hover:bg-[#1a2e1a] transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              Upload Documents
+            </a>
+            <p className="text-[#999] text-sm mt-3">
+              These help us understand your business before we talk, so we can make the call as valuable as possible.
+            </p>
+          </div>
+        </div>
+
         {/* CTA */}
-        <div className="bg-slate-900 rounded-2xl p-8 text-center text-white">
-          <h3 className="text-2xl font-bold mb-3">Stop the bleeding.</h3>
-          <p className="text-slate-300 mb-6 max-w-xl mx-auto">
+        <div className="bg-[#2d4a2d] rounded-xl p-8 text-center text-white">
+          <h3 className="text-2xl font-serif font-medium mb-3">Ready to stop the bleeding?</h3>
+          <p className="text-white/70 mb-6 max-w-xl mx-auto">
             In a 30-minute discovery call, we'll map exactly which systems would break this doom loop and reclaim your ${Math.round(wastedDollarsPerYear / 1000)}K/year.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1442,27 +1482,16 @@ function ResultsDisplay({ score, formData, portalUrl }: { score: ExitLayerScore;
               href="https://calendly.com/michael-exitlayer"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-slate-900 font-semibold rounded-xl hover:bg-slate-100 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#2d4a2d] font-medium rounded-full hover:bg-[#f8f8f6] transition-colors"
             >
               Book Your Discovery Call
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </a>
-            {portalUrl && (
-              <a
-                href={portalUrl}
-                className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-slate-800 text-white font-semibold rounded-xl hover:bg-slate-700 transition-colors"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                </svg>
-                Bookmark Your Portal
-              </a>
-            )}
           </div>
-          <p className="text-slate-400 text-sm mt-4">
-            Your full diagnostic has been saved. Michael will review and follow up within 7-10 days.
+          <p className="text-white/50 text-sm mt-4">
+            Your full diagnostic has been saved. We'll be in touch within 48 hours.
           </p>
         </div>
       </div>
