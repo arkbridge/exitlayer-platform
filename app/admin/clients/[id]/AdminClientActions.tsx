@@ -96,8 +96,8 @@ export default function AdminClientActions({
   return (
     <div className="space-y-6">
       {/* Status Update */}
-      <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
-        <h3 className="text-lg font-semibold text-white mb-4">Update Status</h3>
+      <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
+        <h3 className="text-lg font-serif font-medium text-[#1a1a1a] mb-4">Update Status</h3>
         <div className="space-y-2">
           {STATUS_OPTIONS.map((option) => (
             <button
@@ -106,8 +106,8 @@ export default function AdminClientActions({
               disabled={updating || status === option.value}
               className={`w-full px-4 py-2 rounded-lg text-left transition-colors ${
                 status === option.value
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  ? 'bg-[#2d4a2d] text-white'
+                  : 'bg-[#f8f8f6] text-[#666] hover:bg-[#e5e5e5] hover:text-[#1a1a1a]'
               } disabled:opacity-50`}
             >
               {option.label}
@@ -120,19 +120,19 @@ export default function AdminClientActions({
       </div>
 
       {/* Add Note */}
-      <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
-        <h3 className="text-lg font-semibold text-white mb-4">Admin Notes</h3>
+      <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
+        <h3 className="text-lg font-serif font-medium text-[#1a1a1a] mb-4">Admin Notes</h3>
         <textarea
           value={newNote}
           onChange={(e) => setNewNote(e.target.value)}
           placeholder="Add a note..."
           rows={3}
-          className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mb-3"
+          className="w-full px-4 py-3 bg-[#f8f8f6] border border-[#e5e5e5] rounded-lg text-[#1a1a1a] placeholder-[#999] focus:outline-none focus:ring-2 focus:ring-[#2d4a2d] resize-none mb-3"
         />
         <button
           onClick={addNote}
           disabled={addingNote || !newNote.trim()}
-          className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white font-medium rounded-lg transition-colors"
+          className="w-full px-4 py-2 bg-[#2d4a2d] hover:bg-[#1a3a1a] disabled:bg-[#2d4a2d]/50 text-white font-medium rounded-full transition-colors"
         >
           {addingNote ? 'Adding...' : 'Add Note'}
         </button>
@@ -140,9 +140,9 @@ export default function AdminClientActions({
         {notes.length > 0 && (
           <div className="mt-4 space-y-3 max-h-64 overflow-y-auto">
             {notes.map((note) => (
-              <div key={note.id} className="p-3 bg-gray-800 rounded-lg">
-                <p className="text-gray-300 text-sm">{note.content}</p>
-                <p className="text-gray-500 text-xs mt-1">
+              <div key={note.id} className="p-3 bg-[#f8f8f6] rounded-lg border border-[#e5e5e5]">
+                <p className="text-[#1a1a1a] text-sm">{note.content}</p>
+                <p className="text-[#999] text-xs mt-1">
                   {new Date(note.created_at).toLocaleString()}
                 </p>
               </div>
