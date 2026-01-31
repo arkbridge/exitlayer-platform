@@ -357,7 +357,7 @@ export default function LandingV1() {
           Find out what's breaking.
         </h2>
         <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto">
-          The diagnostic becomes the foundation for a discovery call where we map your transformation in detail.
+          The diagnostic becomes the foundation for a 1-hour implementation call where we map your transformation in detail.
         </p>
 
         <Link href="/signup" className="group inline-flex items-center gap-2 px-10 py-5 bg-white text-black font-medium rounded-full hover:bg-white/90 transition-all text-lg">

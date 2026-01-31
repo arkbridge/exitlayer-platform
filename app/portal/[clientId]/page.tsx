@@ -184,8 +184,8 @@ export default function ClientPortal() {
             />
             <TimelineItem
               status="upcoming"
-              title="Discovery Call"
-              description="We'll schedule a call to discuss your custom transformation plan"
+              title="Implementation Call"
+              description="A 1-hour deep dive to map your systems and define the build plan"
             />
             <TimelineItem
               status="upcoming"

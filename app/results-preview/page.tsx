@@ -573,7 +573,7 @@ export default function ResultsPreview() {
           <div className="bg-slate-900 rounded-2xl p-8 text-center text-white">
             <h3 className="text-2xl font-bold mb-3">Stop the bleeding.</h3>
             <p className="text-slate-300 mb-6 max-w-xl mx-auto">
-              In a 30-minute discovery call, we'll map exactly which systems would break this doom loop and reclaim your ${Math.round(wastedDollarsPerYear / 1000)}K/year.
+              In a 1-hour deep implementation call, we'll map exactly which systems would break this doom loop, define the build plan, and reclaim your ${Math.round(wastedDollarsPerYear / 1000)}K/year.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -582,7 +582,7 @@ export default function ResultsPreview() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-slate-900 font-semibold rounded-xl hover:bg-slate-100 transition-colors"
               >
-                Book Your Discovery Call
+                Book Your Implementation Call
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>

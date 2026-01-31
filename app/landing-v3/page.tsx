@@ -283,7 +283,7 @@ export default function LandingV3() {
         <div className="border border-neutral-200 p-12">
           <h2 className="text-2xl font-normal mb-4">Find out what's breaking.</h2>
           <p className="text-neutral-500 mb-8">
-            The diagnostic becomes the foundation for a discovery call where we map your transformation in detail.
+            The diagnostic becomes the foundation for a 1-hour implementation call where we map your transformation in detail.
           </p>
 
           <Link href="/signup" className="inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white hover:bg-neutral-800 transition-colors">

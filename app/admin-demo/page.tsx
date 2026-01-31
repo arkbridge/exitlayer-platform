@@ -990,7 +990,7 @@ function ClientDetailView({ client, onBack }: { client: typeof DEMO_CLIENTS[0]; 
           {/* Call Sections */}
           {callPrep?.callSections && callPrep.callSections.length > 0 && (
             <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
-              <h2 className="text-lg font-serif font-medium text-[#1a1a1a] mb-4">Discovery Call Questions</h2>
+              <h2 className="text-lg font-serif font-medium text-[#1a1a1a] mb-4">Implementation Call Questions</h2>
               <p className="text-[#666] text-sm mb-6">
                 These are the questions to ask during the call to validate hypotheses and extract system specs.
               </p>

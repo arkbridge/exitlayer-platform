@@ -110,7 +110,7 @@ export default async function DashboardPage() {
             </div>
             <div>
               <h3 className="text-lg font-serif font-medium text-[#1a1a1a]">Action Required: Upload Documents</h3>
-              <p className="text-[#666] text-sm">We need these before scheduling your discovery call</p>
+              <p className="text-[#666] text-sm">We need these before scheduling your implementation call</p>
             </div>
           </div>
           <span className="text-xs font-medium text-[#c77d3e] bg-[#c77d3e]/10 px-3 py-1 rounded-full">0 of 4 uploaded</span>
@@ -142,7 +142,7 @@ export default async function DashboardPage() {
 
         <div className="p-6 bg-[#f8f8f6] border-t border-[#e5e5e5] flex items-center justify-between">
           <p className="text-[#666] text-sm">
-            These help us prepare a tailored action plan for your discovery call.
+            These help us prepare a tailored action plan for your implementation call.
           </p>
           <Link
             href="/assets"
@@ -306,7 +306,7 @@ export default async function DashboardPage() {
         <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
           <h3 className="text-lg font-medium text-[#1a1a1a] mb-3">Ready for the Next Step?</h3>
           <p className="text-[#666] text-sm mb-4">
-            Book your discovery call to map out your personalized transformation plan.
+            Book your implementation call to map out your personalized transformation plan.
           </p>
           <a
             href={`mailto:michael@exitlayer.io?subject=ExitLayer%20Discovery%20Call%20-%20${encodeURIComponent(profile?.company_name || 'My Agency')}`}

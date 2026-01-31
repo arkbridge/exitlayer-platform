@@ -310,7 +310,7 @@ export default function LandingV2() {
             <div>
               <h2 className="text-5xl font-bold mb-6">Find out what's breaking.</h2>
               <p className="text-xl text-neutral-600 mb-8">
-                The diagnostic becomes the foundation for a discovery call where we map your transformation in detail.
+                The diagnostic becomes the foundation for a 1-hour implementation call where we map your transformation in detail.
               </p>
               <Link href="/signup" className="inline-flex items-center gap-3 px-8 py-4 bg-black text-white font-semibold hover:bg-neutral-800 transition-colors text-lg">
                 Start the Diagnostic

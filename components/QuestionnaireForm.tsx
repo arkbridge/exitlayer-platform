@@ -1429,7 +1429,7 @@ function ResultsDisplay({ score, formData, portalUrl }: { score: ExitLayerScore;
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-serif font-medium text-[#1a1a1a]">Before Your Discovery Call</h3>
+                <h3 className="text-lg font-serif font-medium text-[#1a1a1a]">Before Your Implementation Call</h3>
                 <p className="text-[#666] text-sm">Upload these documents so we can prepare a tailored action plan</p>
               </div>
             </div>
@@ -1475,7 +1475,7 @@ function ResultsDisplay({ score, formData, portalUrl }: { score: ExitLayerScore;
         <div className="bg-[#2d4a2d] rounded-xl p-8 text-center text-white">
           <h3 className="text-2xl font-serif font-medium mb-3">Ready to stop the bleeding?</h3>
           <p className="text-white/70 mb-6 max-w-xl mx-auto">
-            In a 30-minute discovery call, we'll map exactly which systems would break this doom loop and reclaim your ${Math.round(wastedDollarsPerYear / 1000)}K/year.
+            In a 1-hour deep implementation call, we'll map exactly which systems would break this doom loop, define the build plan, and reclaim your ${Math.round(wastedDollarsPerYear / 1000)}K/year.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -1484,7 +1484,7 @@ function ResultsDisplay({ score, formData, portalUrl }: { score: ExitLayerScore;
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#2d4a2d] font-medium rounded-full hover:bg-[#f8f8f6] transition-colors"
             >
-              Book Your Discovery Call
+              Book Your Implementation Call
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

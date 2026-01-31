@@ -381,7 +381,7 @@ function ResultsDemo({ score, formData }: { score: typeof simulatedScore; formDa
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-serif font-medium text-[#1a1a1a]">Before Your Discovery Call</h3>
+                <h3 className="text-lg font-serif font-medium text-[#1a1a1a]">Before Your Implementation Call</h3>
                 <p className="text-[#666] text-sm">Upload these documents so we can prepare a tailored action plan</p>
               </div>
             </div>
@@ -419,10 +419,10 @@ function ResultsDemo({ score, formData }: { score: typeof simulatedScore; formDa
         <div className="bg-[#2d4a2d] rounded-xl p-8 text-center text-white">
           <h3 className="text-2xl font-serif font-medium mb-3">Ready to stop the bleeding?</h3>
           <p className="text-white/70 mb-6 max-w-xl mx-auto">
-            In a 30-minute discovery call, we'll map exactly which systems would break this doom loop and reclaim your ${Math.round(wastedDollarsPerYear / 1000)}K/year.
+            In a 1-hour deep implementation call, we'll map exactly which systems would break this doom loop, define the build plan, and reclaim your ${Math.round(wastedDollarsPerYear / 1000)}K/year.
           </p>
           <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#2d4a2d] font-medium rounded-full hover:bg-[#f8f8f6] transition-colors">
-            Book Your Discovery Call
+            Book Your Implementation Call
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -463,7 +463,7 @@ function DashboardDemo({ score }: { score: typeof simulatedScore }) {
             </div>
             <div>
               <h3 className="text-lg font-serif font-medium text-[#1a1a1a]">Action Required: Upload Documents</h3>
-              <p className="text-[#666] text-sm">We need these before scheduling your discovery call</p>
+              <p className="text-[#666] text-sm">We need these before scheduling your implementation call</p>
             </div>
           </div>
           <span className="text-xs font-medium text-[#c77d3e] bg-[#c77d3e]/10 px-3 py-1 rounded-full">0 of 4 uploaded</span>
@@ -494,7 +494,7 @@ function DashboardDemo({ score }: { score: typeof simulatedScore }) {
         </div>
 
         <div className="p-6 bg-[#f8f8f6] border-t border-[#e5e5e5] flex items-center justify-between">
-          <p className="text-[#666] text-sm">These help us prepare a tailored action plan for your discovery call.</p>
+          <p className="text-[#666] text-sm">These help us prepare a tailored action plan for your implementation call.</p>
           <button className="inline-flex items-center gap-2 px-6 py-3 bg-[#2d4a2d] text-white font-medium rounded-full hover:bg-[#1a2e1a] transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -597,7 +597,7 @@ function DashboardDemo({ score }: { score: typeof simulatedScore }) {
 
         <div className="bg-white rounded-xl p-6 border border-[#e5e5e5]">
           <h3 className="text-lg font-medium text-[#1a1a1a] mb-3">Ready for the Next Step?</h3>
-          <p className="text-[#666] text-sm mb-4">Book your discovery call to map out your personalized transformation plan.</p>
+          <p className="text-[#666] text-sm mb-4">Book your implementation call to map out your personalized transformation plan.</p>
           <button className="inline-flex items-center gap-2 px-6 py-3 bg-[#2d4a2d] hover:bg-[#1a2e1a] text-white font-medium rounded-full transition-colors">
             Book a Call
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
