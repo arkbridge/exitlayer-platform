@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { createClient } from '@/lib/supabase/server';
+
+// UUID v4 format validation
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function GET(
   request: NextRequest,
@@ -8,6 +12,25 @@ export async function GET(
 ) {
   try {
     const { clientId } = await params;
+
+    // Validate clientId is a valid UUID (prevents path traversal)
+    if (!UUID_REGEX.test(clientId)) {
+      return NextResponse.json(
+        { error: 'Invalid client ID format' },
+        { status: 400 }
+      );
+    }
+
+    // Check authentication
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
 
     // Build path to client folder
     const clientDir = path.join(process.cwd(), '..', 'projects', 'clients', clientId);
