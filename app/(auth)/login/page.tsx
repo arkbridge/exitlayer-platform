@@ -48,10 +48,10 @@ function LoginForm() {
       }
 
       router.push(finalRedirect)
-      router.refresh()
+      // Removed router.refresh() - causes race condition with middleware
     } else {
       router.push(redirectTo)
-      router.refresh()
+      // Removed router.refresh() - causes race condition with middleware
     }
   }
 

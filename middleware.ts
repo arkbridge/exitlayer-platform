@@ -15,16 +15,15 @@ export async function middleware(request: NextRequest) {
   if (publicRoutes.some(route => path === route || path.startsWith('/api/auth/'))) {
     // If user is logged in and tries to access login/signup, redirect appropriately
     if (user && (path === '/login' || path === '/signup')) {
+      // ALWAYS check redirect param first to prevent race conditions
       const redirectTo = request.nextUrl.searchParams.get('redirect')
 
-      // If there's a specific redirect, use it
       if (redirectTo) {
         return NextResponse.redirect(new URL(redirectTo, request.url))
       }
 
-      // Otherwise, check if user is admin and redirect accordingly
-      // Note: We can't query the database here easily, so we'll use a default
-      // The auth callback will handle admin-specific routing
+      // Only use default redirect if no redirect param exists
+      // Note: Client-side logic in login/page.tsx handles admin-specific routing
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
     return supabaseResponse
