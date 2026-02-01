@@ -3,6 +3,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
+// Admin emails - add more as needed
+const ADMIN_EMAILS = ['michael@arkbridge.co', 'michael@exitlayer.io']
+
 export async function adminLogin(formData: FormData) {
   const supabase = await createClient()
 
@@ -18,14 +21,12 @@ export async function adminLogin(formData: FormData) {
     return { error: error.message }
   }
 
-  // Verify this user is actually an admin
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', data.user.id)
-    .single()
+  // Verify this user is an admin by email
+  // (RLS timing issues prevent reliable profile query immediately after login)
+  const userEmail = data.user.email?.toLowerCase()
+  const isAdmin = ADMIN_EMAILS.some(admin => admin.toLowerCase() === userEmail)
 
-  if (!profile?.is_admin) {
+  if (!isAdmin) {
     // Sign them out if not admin
     await supabase.auth.signOut()
     return { error: 'Access denied. Admin privileges required.' }
