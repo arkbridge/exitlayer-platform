@@ -22,7 +22,7 @@ function LoginForm() {
 
     const supabase = createClient()
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
@@ -33,8 +33,26 @@ function LoginForm() {
       return
     }
 
-    router.push(redirectTo)
-    router.refresh()
+    // Check if user is admin to determine redirect
+    if (data.user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', data.user.id)
+        .single()
+
+      // If user is admin and redirect is /dashboard (default), go to /admin instead
+      let finalRedirect = redirectTo
+      if (profile?.is_admin && redirectTo === '/dashboard') {
+        finalRedirect = '/admin'
+      }
+
+      router.push(finalRedirect)
+      router.refresh()
+    } else {
+      router.push(redirectTo)
+      router.refresh()
+    }
   }
 
   return (
