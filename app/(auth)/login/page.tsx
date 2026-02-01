@@ -1,58 +1,28 @@
 'use client'
 
-import { Suspense, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useState, useTransition } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
+import { login } from './actions'
 
 function LoginForm() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirect') || '/dashboard'
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+  const handleSubmit = async (formData: FormData) => {
     setError(null)
+    formData.set('redirectTo', redirectTo)
 
-    const supabase = createClient()
-
-    const { error, data } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-
-    if (error) {
-      setError(error.message)
-      setLoading(false)
-      return
-    }
-
-    // Check if user is admin to determine redirect
-    if (data.user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('is_admin')
-        .eq('id', data.user.id)
-        .single()
-
-      // If user is admin and redirect is /dashboard (default), go to /admin instead
-      let finalRedirect = redirectTo
-      if (profile?.is_admin && redirectTo === '/dashboard') {
-        finalRedirect = '/admin'
+    startTransition(async () => {
+      const result = await login(formData)
+      if (result?.error) {
+        setError(result.error)
       }
-
-      router.push(finalRedirect)
-      // Removed router.refresh() - causes race condition with middleware
-    } else {
-      router.push(redirectTo)
-      // Removed router.refresh() - causes race condition with middleware
-    }
+      // If successful, the server action redirects - we don't reach here
+    })
   }
 
   return (
@@ -62,16 +32,15 @@ function LoginForm() {
         <p className="text-[#666]">Sign in to access your dashboard</p>
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-5">
+      <form action={handleSubmit} className="space-y-5">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-[#1a1a1a] mb-2">
             Email
           </label>
           <input
             id="email"
+            name="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full px-4 py-3 bg-[#f8f8f6] border border-[#e5e5e5] rounded-lg text-[#1a1a1a] placeholder-[#999] focus:outline-none focus:ring-2 focus:ring-[#2d4a2d]/20 focus:border-[#2d4a2d] transition-colors"
             placeholder="you@example.com"
@@ -84,9 +53,8 @@ function LoginForm() {
           </label>
           <input
             id="password"
+            name="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             required
             className="w-full px-4 py-3 bg-[#f8f8f6] border border-[#e5e5e5] rounded-lg text-[#1a1a1a] placeholder-[#999] focus:outline-none focus:ring-2 focus:ring-[#2d4a2d]/20 focus:border-[#2d4a2d] transition-colors"
             placeholder="••••••••"
@@ -101,10 +69,10 @@ function LoginForm() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={isPending}
           className="w-full py-3 px-4 bg-[#2d4a2d] hover:bg-[#1a2e1a] disabled:bg-[#2d4a2d]/50 text-white font-medium rounded-full transition-colors"
         >
-          {loading ? 'Signing in...' : 'Sign In'}
+          {isPending ? 'Signing in...' : 'Sign In'}
         </button>
       </form>
 
