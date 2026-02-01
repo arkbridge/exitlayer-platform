@@ -13,9 +13,10 @@ export async function middleware(request: NextRequest) {
 
   // Allow public routes
   if (publicRoutes.some(route => path === route || path.startsWith('/api/auth/'))) {
-    // If user is logged in and tries to access login/signup, redirect to dashboard
+    // If user is logged in and tries to access login/signup, redirect appropriately
     if (user && (path === '/login' || path === '/signup')) {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      const redirectTo = request.nextUrl.searchParams.get('redirect') || '/dashboard'
+      return NextResponse.redirect(new URL(redirectTo, request.url))
     }
     return supabaseResponse
   }
