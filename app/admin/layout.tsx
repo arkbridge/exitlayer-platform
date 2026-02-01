@@ -2,6 +2,9 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
+// Admin emails - keep in sync with login/admin/actions.ts
+const ADMIN_EMAILS = ['michael@arkbridge.co', 'michael@exitlayer.io']
+
 export default async function AdminLayout({
   children,
 }: {
@@ -11,17 +14,15 @@ export default async function AdminLayout({
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login')
+    redirect('/login/admin')
   }
 
-  // Check if user is admin
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .single()
+  // Check if user is admin by email
+  const isAdmin = ADMIN_EMAILS.some(
+    admin => admin.toLowerCase() === user.email?.toLowerCase()
+  )
 
-  if (!profile?.is_admin) {
+  if (!isAdmin) {
     redirect('/dashboard')
   }
 
