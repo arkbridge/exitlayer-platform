@@ -196,7 +196,26 @@ export interface AuditResponse {
   implementation_readiness: number;
   implementation_barriers: string[];
 
-  // Section 7: Open-Ended
+  // Section 7: Build Materials
+  core_delivery_walkthrough?: string;
+  repeated_tasks_weekly?: string;
+  judgment_calls_patterns?: string;
+  quality_criteria_good_work?: string;
+  common_mistakes_team?: string;
+  example_deliverable_walkthrough?: string;
+  example_client_email?: string;
+  existing_docs_links?: string;
+  example_client_brief?: string;
+  tribal_knowledge_undocumented?: string;
+  new_hire_training_gaps?: string;
+  client_vocabulary?: string;
+  automate_one_thing?: string;
+  must_stay_human?: string;
+  past_automation_attempts?: string;
+  tool_stack_details?: string;
+  tool_pain_points?: string;
+
+  // Section 8: Contact & Open-Ended
   missing_questions: string;
   additional_context: string;
   unique_factors: string;
