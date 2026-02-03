@@ -114,9 +114,14 @@ const sectionIntros: Record<number, { emoji: string; headline: string; context: 
   5: {
     emoji: '🚀',
     headline: 'Vision & Goals',
-    context: "Final stretch! Let's capture where you want to go so we can map the right path to get you there.",
+    context: "Let's capture where you want to go so we can map the right path to get you there.",
   },
   6: {
+    emoji: '🛠️',
+    headline: 'Build Materials',
+    context: "Now for the good stuff. Walk us through how you actually deliver work so we can build AI skills that match your exact process.",
+  },
+  7: {
     emoji: '✨',
     headline: 'Final Details',
     context: "Almost done! Just a few more questions and your contact info so we can send your personalized diagnostic.",
@@ -375,7 +380,7 @@ export default function QuestionnaireForm() {
           </div>
 
           {/* Section progress cards */}
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-8 gap-1.5">
             {questionSections.map((section, i) => {
               const sectionProgress = getSectionProgress(i, formData);
               const isActive = i === currentQ.sectionIndex;
@@ -386,7 +391,7 @@ export default function QuestionnaireForm() {
                 <button
                   key={i}
                   onClick={() => handleSectionJump(i)}
-                  className={`p-3 rounded-xl border transition-all text-left ${
+                  className={`p-2.5 rounded-lg border transition-all text-left ${
                     isActive
                       ? 'border-[#2d4a2d] bg-[#2d4a2d]'
                       : isComplete
