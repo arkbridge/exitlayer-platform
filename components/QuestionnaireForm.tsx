@@ -85,46 +85,38 @@ function estimateRemainingMinutes(answeredCount: number, totalCount: number): nu
 }
 
 // Section intro content
-const sectionIntros: Record<number, { emoji: string; headline: string; context: string }> = {
+const sectionIntros: Record<number, { headline: string; context: string }> = {
   0: {
-    emoji: '📊',
     headline: 'Business Fundamentals',
-    context: "Let's start with the basics - your revenue, clients, and financial health. This helps us understand your agency's foundation.",
+    context: "Revenue, clients, and financial health. We need this to understand your baseline.",
   },
   1: {
-    emoji: '⏰',
     headline: 'Time & Leverage',
-    context: "Now let's look at how you spend your time. This is often where we find the biggest opportunities to reclaim your freedom.",
+    context: "How you spend your hours. This is where we find the biggest leverage gaps.",
   },
   2: {
-    emoji: '⚙️',
     headline: 'Systems & Documentation',
-    context: "Time to assess your operational infrastructure. The more systematized you are, the more scalable and valuable your agency becomes.",
+    context: "Your operational infrastructure. Systematization drives scalability and exit value.",
   },
   3: {
-    emoji: '👥',
     headline: 'Team & Capabilities',
-    context: "Let's talk about your team. Understanding their strengths and gaps helps us identify where systems can amplify their impact.",
+    context: "Who does what. We need to understand capacity and skill gaps.",
   },
   4: {
-    emoji: '🎯',
     headline: 'Product & Market Position',
-    context: "Now for the exciting part - your unique value and productization potential. This shapes your path to scalable revenue.",
+    context: "Your positioning and productization potential. This shapes the path forward.",
   },
   5: {
-    emoji: '🚀',
     headline: 'Vision & Goals',
-    context: "Let's capture where you want to go so we can map the right path to get you there.",
+    context: "Where you want to go. We need the destination to map the route.",
   },
   6: {
-    emoji: '🛠️',
     headline: 'Build Materials',
-    context: "Now for the good stuff. Walk us through how you actually deliver work so we can build AI skills that match your exact process.",
+    context: "How you actually deliver. This is what we use to build your AI skills.",
   },
   7: {
-    emoji: '✨',
     headline: 'Final Details',
-    context: "Almost done! Just a few more questions and your contact info so we can send your personalized diagnostic.",
+    context: "Contact info so we can send your diagnostic.",
   },
 };
 
@@ -441,25 +433,24 @@ export default function QuestionnaireForm() {
           /* Section Intro Screen */
           <div className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden">
             <div className="p-10 text-center">
-              <div className="text-6xl mb-6">{sectionIntros[currentQ.sectionIndex]?.emoji || '📋'}</div>
-              <div className="text-xs text-[#999] uppercase tracking-wider mb-2">
+              <div className="text-xs text-[#999] uppercase tracking-wider mb-3">
                 Section {currentQ.sectionIndex + 1} of {questionSections.length}
               </div>
-              <h2 className="text-3xl font-serif font-medium text-[#1a1a1a] mb-4">
+              <h2 className="text-2xl font-serif font-medium text-[#1a1a1a] mb-3">
                 {sectionIntros[currentQ.sectionIndex]?.headline || currentQ.sectionTitle}
               </h2>
-              <p className="text-lg text-[#666] mb-8 max-w-md mx-auto leading-relaxed">
+              <p className="text-[#666] mb-6 max-w-md mx-auto">
                 {sectionIntros[currentQ.sectionIndex]?.context}
               </p>
-              <div className="text-sm text-[#999] mb-8">
-                {currentQ.totalInSection} questions in this section
+              <div className="text-sm text-[#999] mb-6">
+                {currentQ.totalInSection} questions
               </div>
               <button
                 onClick={handleNext}
-                className="px-10 py-4 bg-[#2d4a2d] text-white rounded-full font-medium hover:bg-[#1a2e1a] transition-all inline-flex items-center gap-2"
+                className="px-8 py-3 bg-[#2d4a2d] text-white rounded-full font-medium hover:bg-[#1a2e1a] transition-colors inline-flex items-center gap-2"
               >
-                Let's Go
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                Continue
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
