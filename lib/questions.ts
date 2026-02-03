@@ -1627,7 +1627,164 @@ export const questionSections: QuestionSection[] = [
     ]
   },
   {
-    title: "Section 7: Final Insights & Contact",
+    title: "Section 7: Build Materials",
+    description: "Artifacts, examples, and specifics we need to build your systems (17 questions)",
+    questions: [
+      // Process & Workflow Details
+      {
+        id: "core_delivery_walkthrough",
+        question: "Walk us through your typical client engagement from kickoff to final delivery. What are the major phases and who does what?",
+        type: "textarea",
+        field: "core_delivery_walkthrough",
+        required: true,
+        placeholder: "e.g., Phase 1: Discovery (I lead) - intake call, gather requirements. Phase 2: Strategy (I create) - build strategy doc. Phase 3: Execution (team does) - implement strategy. Phase 4: Review (I QA) - final check before delivery...",
+        helpText: "This is the skeleton for your delivery workflow. Be as specific as possible - we'll systematize this."
+      },
+      {
+        id: "most_repeated_tasks",
+        question: "List the 3-5 tasks you or your team do repeatedly every week. Be specific.",
+        type: "textarea",
+        field: "most_repeated_tasks",
+        required: true,
+        placeholder: "e.g., 1. Write weekly status email to clients (30 min each, 8 clients). 2. Review designer's work before sending (15 min per deliverable). 3. Create project briefs from client requests (45 min each)...",
+        helpText: "These become your first skills. High frequency = high impact."
+      },
+      {
+        id: "judgment_calls",
+        question: "What are the 3-5 judgment calls you make regularly? Where do you have to 'use your brain' vs. follow a process?",
+        type: "textarea",
+        field: "judgment_calls",
+        required: true,
+        placeholder: "e.g., 1. Deciding if a client request is in scope or out of scope. 2. Choosing which approach to recommend when there are multiple options. 3. Determining if work is 'good enough' to send...",
+        helpText: "These become decision frameworks. The hardest part to systematize but highest value."
+      },
+      {
+        id: "quality_criteria",
+        question: "How do you know when work is 'good enough' to send to a client? What do you check for?",
+        type: "textarea",
+        field: "quality_criteria",
+        required: true,
+        placeholder: "e.g., I check: 1. Does it match the brief? 2. Is the formatting consistent? 3. Are there any typos? 4. Does it follow brand guidelines? 5. Would I be proud to put my name on it?",
+        helpText: "This becomes your QA checklist and review criteria for skills."
+      },
+      {
+        id: "common_mistakes",
+        question: "What are the most common mistakes or issues that come up in delivery? How do you typically handle them?",
+        type: "textarea",
+        field: "common_mistakes",
+        placeholder: "e.g., 1. Team misinterprets brief - I clarify and they redo. 2. Client changes scope mid-project - I have a conversation about timeline/budget. 3. Deliverable doesn't match brand - send back for revision...",
+        helpText: "Edge cases and error handling for your systems."
+      },
+      // Artifacts & Examples
+      {
+        id: "example_deliverable_link",
+        question: "Link to or describe an example of your best client deliverable. This could be a report, design, strategy doc, campaign, etc.",
+        type: "textarea",
+        field: "example_deliverable_link",
+        required: true,
+        placeholder: "Paste a Google Drive/Dropbox link, or describe what makes your best work great. e.g., 'Our Q4 marketing strategy for [Client] - comprehensive 30-page doc covering audience analysis, channel strategy, content calendar, and KPIs'",
+        helpText: "Shows your quality bar, format, and tone. We'll reference this when building."
+      },
+      {
+        id: "example_client_email",
+        question: "Paste an example of a typical client email you send (status update, kickoff, scope clarification, etc.). Remove any sensitive info.",
+        type: "textarea",
+        field: "example_client_email",
+        required: true,
+        placeholder: "e.g., 'Hi [Client], Quick update on the project: We've completed the initial designs and are ready for your review. Key items to look at: 1) Homepage hero section 2) Navigation structure 3) Color palette application. Please share feedback by Friday so we can stay on track for the [date] launch. Let me know if you have questions! [Name]'",
+        helpText: "Direct template material for client communication skills."
+      },
+      {
+        id: "existing_docs_links",
+        question: "Link to any process documentation, SOPs, templates, or checklists you currently use (even if outdated or messy). Multiple links welcome.",
+        type: "textarea",
+        field: "existing_docs_links",
+        placeholder: "e.g., Google Drive folder: [link]. Notion workspace: [link]. Old SOP doc: [link]. It's okay if these are messy or incomplete - we'll build on them.",
+        helpText: "Raw material to systematize. Shows what you've already tried."
+      },
+      {
+        id: "client_brief_example",
+        question: "Paste or describe a recent client brief or project request you received. This shows us how your clients communicate with you.",
+        type: "textarea",
+        field: "client_brief_example",
+        placeholder: "e.g., 'Hey team, we need a landing page for our new product launch. Target audience is enterprise CTOs. Key messaging: security, scalability, cost savings. Need it by end of month. Budget is flexible but let's keep it reasonable. Can you send over a proposal?'",
+        helpText: "Input format for brief-parsing skill. Shows what you're working with."
+      },
+      // Knowledge & Context
+      {
+        id: "tribal_knowledge",
+        question: "What knowledge lives only in your head (or a senior team member's head) that would take weeks to teach someone new?",
+        type: "textarea",
+        field: "tribal_knowledge",
+        required: true,
+        placeholder: "e.g., 1. How to handle our biggest client's preferences (they hate certain words, prefer specific formats). 2. The nuances of our pricing - when to discount, when to hold firm. 3. Which vendors to use for different project types...",
+        helpText: "Knowledge extraction priority. This is the IP that needs documenting."
+      },
+      {
+        id: "new_hire_training",
+        question: "If you hired someone tomorrow, what would the first 2 weeks of training look like? What would they need to learn?",
+        type: "textarea",
+        field: "new_hire_training",
+        placeholder: "e.g., Week 1: Shadow me on client calls, learn our tools (Asana, Slack, Figma), review past projects. Week 2: Handle a small project with heavy supervision, learn our review process, meet the team...",
+        helpText: "Shows implicit systems and training materials needed. Also reveals what's NOT documented."
+      },
+      {
+        id: "client_vocabulary",
+        question: "Are there any industry-specific terms, client-specific language, or internal jargon your team uses? List the key terms and what they mean.",
+        type: "textarea",
+        field: "client_vocabulary",
+        placeholder: "e.g., 'Hero' = main banner section. 'Above the fold' = visible without scrolling. 'QBR' = quarterly business review. 'The deck' = our standard presentation template. '[Client name] style' = minimalist, lots of whitespace...",
+        helpText: "Critical for skills to use correct language. Prevents AI-sounding outputs."
+      },
+      // Priorities & Constraints
+      {
+        id: "automate_one_thing",
+        question: "If you could wave a magic wand and have ONE thing fully automated or systematized by the end of this program, what would it be?",
+        type: "textarea",
+        field: "automate_one_thing",
+        required: true,
+        placeholder: "e.g., Client status updates. I spend 3 hours every Monday writing these and they're 80% the same. If I could just click a button and have a draft ready to review, I'd get my Mondays back.",
+        helpText: "Your #1 priority. This is our first build target."
+      },
+      {
+        id: "must_stay_human",
+        question: "What parts of your work should NEVER be automated or delegated? What requires your personal touch?",
+        type: "textarea",
+        field: "must_stay_human",
+        required: true,
+        placeholder: "e.g., Final client presentations - they expect me personally. Pricing negotiations - too nuanced. Creative direction for our biggest accounts - that's my superpower.",
+        helpText: "Boundaries. Prevents us from building something you'll reject."
+      },
+      {
+        id: "past_automation_attempts",
+        question: "Have you tried to automate or systematize anything before? What worked? What failed?",
+        type: "textarea",
+        field: "past_automation_attempts",
+        placeholder: "e.g., Tried Zapier for lead notifications - worked great. Tried to create SOPs in Notion - nobody used them. Tried to delegate client calls - clients complained.",
+        helpText: "Avoids repeating failures. Shows what you've already attempted."
+      },
+      // Integration Context
+      {
+        id: "tool_stack_details",
+        question: "List your main tools with how you use them. Be specific about what happens in each tool.",
+        type: "textarea",
+        field: "tool_stack_details",
+        required: true,
+        placeholder: "e.g., Slack: All client comms, team chat, notifications. HubSpot: Lead tracking, deal pipeline, email sequences. Asana: Project management, task assignment, timelines. Google Drive: All file storage, client deliverables, internal docs. Figma: Design work, client presentations...",
+        helpText: "Integration targets. Knowing your stack shapes what we can automate and connect."
+      },
+      {
+        id: "tool_pain_points",
+        question: "Which tools cause the most friction? What do you wish worked better or was connected?",
+        type: "textarea",
+        field: "tool_pain_points",
+        placeholder: "e.g., HubSpot and Asana don't talk to each other - when a deal closes, I manually create the project. Slack notifications are overwhelming - important stuff gets buried. Our Google Drive is a mess - can never find anything.",
+        helpText: "Automation priorities. Where skill/workflow integration adds most value."
+      }
+    ]
+  },
+  {
+    title: "Section 8: Final Insights & Contact",
     description: "Open-ended insights and your contact information (7 questions)",
     questions: [
       {
