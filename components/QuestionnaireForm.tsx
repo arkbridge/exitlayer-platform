@@ -112,7 +112,7 @@ const sectionIntros: Record<number, { headline: string; context: string }> = {
   },
   6: {
     headline: 'Build Materials',
-    context: "How you actually deliver. This is what we use to build your AI skills.",
+    context: "How you actually deliver. This is what we use to build your internal infrastructure.",
   },
   7: {
     headline: 'Final Details',
