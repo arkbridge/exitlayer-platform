@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     const supabase = createServiceClient()
 
     switch (webhookData.action) {
-      case 'payment.succeeded': {
+      case 'payment_succeeded': {
         const data = webhookData.data as {
           user_id: string
           membership_id: string
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
         break
       }
 
-      case 'membership.went_valid': {
+      case 'membership_activated': {
         const data = webhookData.data as {
           user_id: string
           id: string
@@ -63,14 +63,14 @@ export async function POST(request: NextRequest) {
           .eq('whop_user_id', data.user_id)
 
         if (error) {
-          console.error('Failed to update profile on membership valid:', error)
+          console.error('Failed to update profile on membership activated:', error)
         } else {
-          console.log(`Membership went valid for whop user ${data.user_id}`)
+          console.log(`Membership activated for whop user ${data.user_id}`)
         }
         break
       }
 
-      case 'membership.went_invalid': {
+      case 'membership_deactivated': {
         const data = webhookData.data as {
           user_id: string
         }
@@ -84,9 +84,9 @@ export async function POST(request: NextRequest) {
           .eq('whop_user_id', data.user_id)
 
         if (error) {
-          console.error('Failed to update profile on membership invalid:', error)
+          console.error('Failed to update profile on membership deactivated:', error)
         } else {
-          console.log(`Membership went invalid for whop user ${data.user_id}`)
+          console.log(`Membership deactivated for whop user ${data.user_id}`)
         }
         break
       }
