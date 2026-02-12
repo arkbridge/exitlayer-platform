@@ -1342,13 +1342,13 @@ function StageCTA({ ctaType, valuationGap, potentialValuation }: {
         </h2>
         <p className="text-white/50 mb-10 max-w-lg mx-auto leading-relaxed text-lg">
           At your current stage, focus on hitting $300K+ revenue and building a small team.
-          Save your results and we&apos;ll be here when you&apos;re ready.
+          We&apos;ve put together a guide to help you get there.
         </p>
         <a
-          href="/create-account"
+          href="/free-guide"
           className="inline-flex items-center gap-3 px-10 py-5 bg-white text-emerald-900 rounded-full font-medium hover:bg-emerald-50 transition-all text-lg hover:scale-105 shadow-2xl shadow-emerald-900/20"
         >
-          Save My Results
+          Get the Free Guide
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
