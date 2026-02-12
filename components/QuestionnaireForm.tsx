@@ -1392,14 +1392,17 @@ function StageCTA({ ctaType, valuationGap, potentialValuation }: {
       <h2 className="text-3xl md:text-4xl font-serif font-medium text-white mb-4">
         Get your roadmap to{' '}
         <span className="text-emerald-400">
-          $<AnimatedNumber value={potentialValuation / 1000000} decimals={1} suffix="M" />
+          ${potentialValuation >= 1000000
+            ? <AnimatedNumber value={potentialValuation / 1000000} decimals={1} suffix="M" />
+            : <AnimatedNumber value={potentialValuation / 1000} decimals={0} suffix="K" />
+          }
         </span>
       </h2>
       <p className="text-white/50 mb-10 max-w-lg mx-auto leading-relaxed text-lg">
         In 30 minutes, we&apos;ll map exactly which systems would unlock that{' '}
         <span className="text-white/70">
           ${valuationGap >= 1000000
-            ? `${(valuationGap / 1000000).toFixed(2)}M`
+            ? `${(valuationGap / 1000000).toFixed(1)}M`
             : `${(valuationGap / 1000).toFixed(0)}K`}
         </span> you&apos;re leaving on the table.
       </p>
@@ -1510,7 +1513,10 @@ function ValuationResults({ valuation, formData }: { valuation: ValuationResult;
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-emerald-400 mb-6 leading-tight">
               It could be worth{' '}
               <span className="text-emerald-300">
-                $<AnimatedNumber value={valuation.potentialValuation / 1000000} decimals={1} suffix="M" />
+                ${valuation.potentialValuation >= 1000000
+                  ? <AnimatedNumber value={valuation.potentialValuation / 1000000} decimals={1} suffix="M" />
+                  : <AnimatedNumber value={valuation.potentialValuation / 1000} decimals={0} suffix="K" />
+                }
               </span>
               .
             </h2>
@@ -1550,7 +1556,10 @@ function ValuationResults({ valuation, formData }: { valuation: ValuationResult;
                   </span>
                 </div>
                 <div className="text-4xl font-serif font-medium text-emerald-300 mb-2">
-                  $<AnimatedNumber value={valuation.potentialValuation / 1000000} decimals={1} suffix="M" />
+                  ${valuation.potentialValuation >= 1000000
+                    ? <AnimatedNumber value={valuation.potentialValuation / 1000000} decimals={1} suffix="M" />
+                    : <AnimatedNumber value={valuation.potentialValuation / 1000} decimals={0} suffix="K" />
+                  }
                 </div>
                 <p className="text-emerald-300/50 text-sm">With systems that don&apos;t require you</p>
               </div>
