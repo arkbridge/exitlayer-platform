@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { REQUIRED_DOCUMENTS } from '@/lib/stage-utils'
 
 interface Asset {
   id: string
@@ -14,11 +15,14 @@ interface Asset {
 }
 
 const CATEGORIES = [
-  { id: 'sop', label: 'SOPs & Processes', icon: '📋' },
-  { id: 'template', label: 'Templates', icon: '📄' },
-  { id: 'example', label: 'Work Examples', icon: '🎨' },
-  { id: 'contract', label: 'Contracts', icon: '📝' },
-  { id: 'other', label: 'Other', icon: '📁' },
+  ...REQUIRED_DOCUMENTS.map(doc => ({
+    id: doc.id,
+    label: doc.name,
+    icon: doc.icon,
+    required: true,
+    description: doc.description,
+  })),
+  { id: 'other', label: 'Other', icon: '📁', required: false, description: 'Any other relevant files' },
 ]
 
 function formatFileSize(bytes: number): string {
@@ -30,15 +34,15 @@ function formatFileSize(bytes: number): string {
 export default function AssetsPage() {
   const [assets, setAssets] = useState<Asset[]>([])
   const [uploading, setUploading] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState('sop')
+  const [selectedCategory, setSelectedCategory] = useState('service_offerings')
   const [dragActive, setDragActive] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [userId, setUserId] = useState<string | null>(null)
   const [submissionId, setSubmissionId] = useState<string | null>(null)
+  const [documentsUploaded, setDocumentsUploaded] = useState<string[]>([])
 
   const supabase = createClient()
 
-  // Fetch user and assets on mount
   useEffect(() => {
     async function init() {
       const { data: { user } } = await supabase.auth.getUser()
@@ -58,13 +62,26 @@ export default function AssetsPage() {
           setSubmissionId(submission.id)
           fetchAssets(submission.id)
         }
+
+        // Get current documents_uploaded from audit_sessions
+        const { data: session } = await supabase
+          .from('audit_sessions')
+          .select('documents_uploaded')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single()
+
+        if (session?.documents_uploaded) {
+          setDocumentsUploaded(session.documents_uploaded)
+        }
       }
     }
     init()
   }, [])
 
   async function fetchAssets(subId: string) {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('client_assets')
       .select('*')
       .eq('submission_id', subId)
@@ -101,6 +118,24 @@ export default function AssetsPage() {
     }
   }
 
+  async function updateDocumentsUploaded(category: string) {
+    // Only track required document categories
+    const isRequired = REQUIRED_DOCUMENTS.some(doc => doc.id === category)
+    if (!isRequired || !userId) return
+
+    const updated = [...new Set([...documentsUploaded, category])]
+    setDocumentsUploaded(updated)
+
+    // Update audit_sessions so stage progression works
+    await supabase
+      .from('audit_sessions')
+      .update({
+        documents_uploaded: updated,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('user_id', userId)
+  }
+
   async function uploadFiles(files: FileList) {
     if (!userId || !submissionId) {
       setError('Please complete the questionnaire first')
@@ -112,10 +147,8 @@ export default function AssetsPage() {
 
     for (const file of Array.from(files)) {
       try {
-        // Create storage path: user_id/submission_id/category/filename
         const storagePath = `${userId}/${submissionId}/${selectedCategory}/${file.name}`
 
-        // Upload to Supabase Storage
         const { error: uploadError } = await supabase.storage
           .from('client-assets')
           .upload(storagePath, file, {
@@ -129,7 +162,6 @@ export default function AssetsPage() {
           continue
         }
 
-        // Create database record
         const { error: dbError } = await supabase.from('client_assets').insert({
           submission_id: submissionId,
           user_id: userId,
@@ -143,6 +175,9 @@ export default function AssetsPage() {
         if (dbError) {
           console.error('DB error:', dbError)
           setError(`Failed to save record for ${file.name}`)
+        } else {
+          // Track required document upload for stage progression
+          await updateDocumentsUploaded(selectedCategory)
         }
       } catch (err) {
         console.error('Error:', err)
@@ -159,11 +194,25 @@ export default function AssetsPage() {
   async function deleteAsset(asset: Asset) {
     if (!confirm(`Delete ${asset.file_name}?`)) return
 
-    // Delete from storage
     await supabase.storage.from('client-assets').remove([asset.storage_path])
-
-    // Delete from database
     await supabase.from('client_assets').delete().eq('id', asset.id)
+
+    // If deleting the last file in a required category, remove from documents_uploaded
+    const isRequired = REQUIRED_DOCUMENTS.some(doc => doc.id === asset.category)
+    if (isRequired && userId) {
+      const remaining = assets.filter(a => a.category === asset.category && a.id !== asset.id)
+      if (remaining.length === 0) {
+        const updated = documentsUploaded.filter(d => d !== asset.category)
+        setDocumentsUploaded(updated)
+        await supabase
+          .from('audit_sessions')
+          .update({
+            documents_uploaded: updated,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('user_id', userId)
+      }
+    }
 
     if (submissionId) {
       fetchAssets(submissionId)
@@ -175,13 +224,64 @@ export default function AssetsPage() {
     assets: assets.filter(a => a.category === cat.id),
   }))
 
+  const requiredCount = REQUIRED_DOCUMENTS.length
+  const uploadedRequiredCount = REQUIRED_DOCUMENTS.filter(doc =>
+    documentsUploaded.includes(doc.id)
+  ).length
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-medium text-[#1a1a1a] mb-2">Upload Assets</h1>
+        <h1 className="text-3xl font-serif font-medium text-[#1a1a1a] mb-2">Upload Documents</h1>
         <p className="text-[#666]">
-          Share your SOPs, templates, and work examples to help us build your custom systems.
+          Share your documents to help us build your custom systems.
         </p>
+      </div>
+
+      {/* Progress indicator */}
+      <div className="mb-6 p-4 bg-white rounded-xl border border-[#e5e5e5]">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-sm font-medium text-[#1a1a1a]">
+            Required Documents
+          </span>
+          <span className="text-sm text-[#666]">
+            {uploadedRequiredCount} of {requiredCount} uploaded
+          </span>
+        </div>
+        <div className="w-full bg-[#f0f0ee] rounded-full h-2 mb-4">
+          <div
+            className="bg-emerald-800 h-2 rounded-full transition-all duration-300"
+            style={{ width: `${(uploadedRequiredCount / requiredCount) * 100}%` }}
+          />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {REQUIRED_DOCUMENTS.map(doc => {
+            const isUploaded = documentsUploaded.includes(doc.id)
+            return (
+              <div key={doc.id} className="flex items-center gap-2 text-sm">
+                {isUploaded ? (
+                  <svg className="w-4 h-4 text-emerald-700 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4 text-[#ccc] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9" strokeWidth={2} />
+                  </svg>
+                )}
+                <span className={isUploaded ? 'text-[#1a1a1a]' : 'text-[#666]'}>
+                  {doc.name}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+        {uploadedRequiredCount === requiredCount && (
+          <div className="mt-3 p-3 bg-emerald-50 rounded-lg border border-emerald-100">
+            <p className="text-sm text-emerald-800 font-medium">
+              All required documents uploaded. You're ready to move forward!
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Category selector */}
@@ -293,8 +393,8 @@ export default function AssetsPage() {
         </div>
       ) : (
         <div className="text-center py-12 text-[#999]">
-          <p>No assets uploaded yet.</p>
-          <p className="text-sm mt-1">Upload your SOPs, templates, and examples to get started.</p>
+          <p>No documents uploaded yet.</p>
+          <p className="text-sm mt-1">Upload your required documents to get started.</p>
         </div>
       )}
     </div>

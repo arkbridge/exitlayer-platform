@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 
 // POST /api/full-audit/submit - Submit completed full audit
 export async function POST(request: NextRequest) {
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
     // Find user's in-progress audit session
     const { data: session, error: sessionError } = await supabase
       .from('audit_sessions')
-      .select('*')
+      .select('*, form_data')
       .eq('user_id', user.id)
       .eq('full_audit_status', 'in_progress')
       .order('created_at', { ascending: false })
@@ -67,12 +68,25 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // TODO: Generate comprehensive analysis from full audit data
-    // This could include:
-    // - Detailed delegation roadmap
-    // - System building priorities
-    // - IP extraction opportunities
-    // - Action items ranked by impact
+    // Sync full audit data to submissions table (use service client to bypass RLS)
+    const serviceClient = createServiceClient()
+    const mergedData = {
+      ...(session.form_data || {}),
+      full_audit: form_data,
+    }
+
+    const { error: syncError } = await serviceClient
+      .from('submissions')
+      .update({
+        questionnaire_data: mergedData,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('user_id', user.id)
+
+    if (syncError) {
+      console.error('Failed to sync full audit to submissions:', syncError)
+      // Don't fail the request — the audit_sessions update succeeded
+    }
 
     return NextResponse.json({
       success: true,
