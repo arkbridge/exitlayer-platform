@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('Failed to create audit session:', error)
       return NextResponse.json(
-        { error: 'Failed to create session', details: error.message, code: error.code },
+        { error: 'Failed to create session' },
         { status: 500 }
       )
     }
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Audit session creation error:', error)
     return NextResponse.json(
-      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { error: 'Internal server error' },
       { status: 500 }
     )
   }
