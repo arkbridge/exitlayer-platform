@@ -1336,21 +1336,19 @@ function StageCTA({ ctaType, valuationGap, potentialValuation }: {
   if (ctaType === 'free-guide') {
     return (
       <div className="text-center">
-        <p className="text-emerald-400/60 text-xs uppercase tracking-wider mb-4 font-medium">Next Step</p>
+        <p className="text-emerald-400/60 text-xs uppercase tracking-wider mb-4 font-medium">You&apos;re Early</p>
         <h2 className="text-3xl md:text-4xl font-serif font-medium text-white mb-4">
-          Let&apos;s talk about where you&apos;re headed.
+          You&apos;re not quite ready yet.
         </h2>
         <p className="text-white/50 mb-10 max-w-lg mx-auto leading-relaxed text-lg">
-          Every agency starts somewhere. Book a call and we&apos;ll map out
-          what systems would make the biggest difference at your stage.
+          At your current stage, focus on hitting $300K+ revenue and building a small team.
+          Save your results and we&apos;ll be here when you&apos;re ready.
         </p>
         <a
-          href="https://cal.com/exit-layer/30min"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/create-account"
           className="inline-flex items-center gap-3 px-10 py-5 bg-white text-emerald-900 rounded-full font-medium hover:bg-emerald-50 transition-all text-lg hover:scale-105 shadow-2xl shadow-emerald-900/20"
         >
-          Book Your Strategy Call
+          Save My Results
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
