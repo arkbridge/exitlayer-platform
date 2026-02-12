@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
   // Allow public routes WITHOUT hitting Supabase (avoids hanging when instance is unreachable)
-  const isPublic = publicRoutes.some(route => path === route || path.startsWith('/api/auth/') || path.startsWith('/api/audit-session') || path.startsWith('/api/webhooks/') || path.startsWith('/platform-demo'))
+  const isPublic = publicRoutes.some(route => path === route || path.startsWith('/api/auth/') || path.startsWith('/api/audit-session') || path.startsWith('/api/webhooks/') || path.startsWith('/api/submit') || path.startsWith('/platform-demo'))
   const isAuthPage = path === '/login' || path === '/join-xl-9f7k2m'
 
   if (isPublic && !isAuthPage) {
