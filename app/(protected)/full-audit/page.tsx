@@ -33,7 +33,7 @@ export default async function FullAuditPage() {
   // If not started yet, start the audit
   if (auditSession.full_audit_status === 'not_started' || !auditSession.full_audit_status) {
     // Call the API to start the audit
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/full-audit`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/full-audit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

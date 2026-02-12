@@ -22,7 +22,8 @@ export default async function ProtectedLayout({
     .single()
 
   // Redirect free-tier users to upgrade page (admins bypass)
-  if (profile && profile.access_tier !== 'paid' && !profile.is_admin) {
+  // Treat missing profile as free tier to prevent paywall bypass
+  if (!profile || (profile.access_tier !== 'paid' && !profile.is_admin)) {
     redirect('/upgrade')
   }
 
