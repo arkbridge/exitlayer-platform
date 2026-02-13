@@ -32,18 +32,24 @@ export default async function FullAuditPage() {
 
   // If not started yet, start the audit
   if (auditSession.full_audit_status === 'not_started' || !auditSession.full_audit_status) {
-    // Call the API to start the audit
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/full-audit`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Cookie': `sb-access-token=${(await supabase.auth.getSession()).data.session?.access_token}`,
-      },
-    })
+    const { error: startError } = await supabase
+      .from('audit_sessions')
+      .update({
+        full_audit_status: 'in_progress',
+        full_audit_current_question: 0,
+        full_audit_data: {},
+        full_audit_started_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', auditSession.id)
 
-    if (!response.ok) {
-      console.error('Failed to start full audit')
+    if (startError) {
+      console.error('Failed to start full audit:', startError)
     }
+
+    auditSession.full_audit_status = 'in_progress'
+    auditSession.full_audit_current_question = 0
+    auditSession.full_audit_data = {}
   }
 
   // Load saved progress

@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeInternalRedirect } from '@/lib/security'
 import { redirect } from 'next/navigation'
 
 export async function login(formData: FormData) {
@@ -8,7 +9,7 @@ export async function login(formData: FormData) {
 
   const email = formData.get('email') as string
   const password = formData.get('password') as string
-  const redirectTo = formData.get('redirectTo') as string || '/dashboard'
+  const redirectTo = sanitizeInternalRedirect(formData.get('redirectTo') as string | null, '/dashboard')
 
   const { error, data } = await supabase.auth.signInWithPassword({
     email,

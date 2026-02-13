@@ -1,11 +1,13 @@
+import Link from 'next/link'
+
 export default function FreeGuidePage() {
   return (
     <div className="min-h-screen bg-[#f8f8f6] flex items-center justify-center px-6">
       <div className="w-full max-w-lg text-center">
         <div className="mb-8">
-          <a href="/" className="text-lg font-medium text-[#1a1a1a] tracking-tight">
+          <Link href="/" className="text-lg font-medium text-[#1a1a1a] tracking-tight">
             ExitLayer
-          </a>
+          </Link>
         </div>
 
         <div className="bg-white rounded-xl border border-[#e5e5e5] p-10">
@@ -44,9 +46,9 @@ export default function FreeGuidePage() {
 
           <p className="text-[#999] text-sm">
             When you&apos;re past $300K with a team in place,{' '}
-            <a href="/questionnaire" className="text-emerald-800 hover:underline">
+            <Link href="/questionnaire" className="text-emerald-800 hover:underline">
               retake the assessment
-            </a>
+            </Link>
             {' '}and we&apos;ll build your exit roadmap.
           </p>
         </div>

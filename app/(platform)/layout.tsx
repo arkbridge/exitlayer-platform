@@ -9,6 +9,10 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  if (process.env.ENABLE_PLATFORM_APP !== 'true') {
+    redirect('/platform-demo');
+  }
+
   const supabase = await createClient();
 
   const {

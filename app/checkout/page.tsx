@@ -2,7 +2,13 @@
 
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
+
+const WhopCheckoutEmbed = dynamic(
+  () => import('@whop/checkout/react').then((mod) => mod.WhopCheckoutEmbed),
+  { ssr: false }
+)
 
 function CheckoutContent() {
   const searchParams = useSearchParams()
@@ -157,8 +163,6 @@ function CheckoutContent() {
 }
 
 function WhopCheckout({ planId }: { planId: string }) {
-  const { WhopCheckoutEmbed } = require('@whop/checkout/react')
-
   return (
     <WhopCheckoutEmbed
       planId={planId}

@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
+import { sanitizeInternalRedirect } from '@/lib/security'
 
 // Routes that don't require authentication
 const publicRoutes = ['/', '/login', '/join-xl-9f7k2m', '/forgot-password', '/reset-password', '/api/auth/callback', '/questionnaire', '/login/admin', '/create-account', '/resume', '/upgrade', '/checkout', '/free-guide', '/icon', '/apple-icon', '/opengraph-image', '/platform-demo']
@@ -7,15 +8,28 @@ const publicRoutes = ['/', '/login', '/join-xl-9f7k2m', '/forgot-password', '/re
 // Routes that require admin access
 const adminRoutes = ['/admin']
 
+function withSecurityHeaders(response: NextResponse) {
+  response.headers.set('X-Frame-Options', 'DENY')
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  response.headers.set(
+    'Permissions-Policy',
+    'camera=(), microphone=(), geolocation=(), interest-cohort=()'
+  )
+  return response
+}
+
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
   // Allow public routes WITHOUT hitting Supabase (avoids hanging when instance is unreachable)
-  const isPublic = publicRoutes.some(route => path === route || path.startsWith('/api/auth/') || path.startsWith('/api/audit-session') || path.startsWith('/api/webhooks/') || path.startsWith('/api/submit') || path.startsWith('/platform-demo'))
+  const isPublic = publicRoutes.some(
+    route => path === route || path.startsWith('/platform-demo') || path.startsWith('/api/')
+  )
   const isAuthPage = path === '/login' || path === '/join-xl-9f7k2m'
 
   if (isPublic && !isAuthPage) {
-    return NextResponse.next()
+    return withSecurityHeaders(NextResponse.next())
   }
 
   // Only call Supabase for protected routes or auth pages (login/signup redirect logic)
@@ -26,23 +40,23 @@ export async function middleware(request: NextRequest) {
     if (user && isAuthPage) {
       // ALWAYS check redirect param first to prevent race conditions
       const redirectTo = request.nextUrl.searchParams.get('redirect')
-
-      if (redirectTo) {
-        return NextResponse.redirect(new URL(redirectTo, request.url))
+      const safeRedirect = sanitizeInternalRedirect(redirectTo, '/dashboard')
+      if (safeRedirect) {
+        return withSecurityHeaders(NextResponse.redirect(new URL(safeRedirect, request.url)))
       }
 
       // Only use default redirect if no redirect param exists
       // Note: Client-side logic in login/page.tsx handles admin-specific routing
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      return withSecurityHeaders(NextResponse.redirect(new URL('/dashboard', request.url)))
     }
-    return supabaseResponse
+    return withSecurityHeaders(supabaseResponse)
   }
 
   // Protect all other routes - require authentication
   if (!user) {
     const redirectUrl = new URL('/login', request.url)
     redirectUrl.searchParams.set('redirect', path)
-    return NextResponse.redirect(redirectUrl)
+    return withSecurityHeaders(NextResponse.redirect(redirectUrl))
   }
 
   // Check admin routes - need to fetch profile to check is_admin
@@ -52,7 +66,7 @@ export async function middleware(request: NextRequest) {
     // The admin layout will handle the redirect if not admin
   }
 
-  return supabaseResponse
+  return withSecurityHeaders(supabaseResponse)
 }
 
 export const config = {

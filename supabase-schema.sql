@@ -152,8 +152,19 @@ ALTER TABLE public.audit_sessions ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "profiles_select" ON public.profiles FOR SELECT
   USING (auth.uid() = id OR (SELECT is_admin FROM public.profiles WHERE id = auth.uid()));
 
-CREATE POLICY "profiles_update" ON public.profiles FOR UPDATE
-  USING (auth.uid() = id);
+CREATE POLICY "profiles_update_self" ON public.profiles FOR UPDATE
+  USING (auth.uid() = id)
+  WITH CHECK (
+    auth.uid() = id
+    AND is_admin = (SELECT p.is_admin FROM public.profiles p WHERE p.id = auth.uid())
+    AND access_tier = (SELECT p.access_tier FROM public.profiles p WHERE p.id = auth.uid())
+    AND whop_membership_id IS NOT DISTINCT FROM (SELECT p.whop_membership_id FROM public.profiles p WHERE p.id = auth.uid())
+    AND paid_at IS NOT DISTINCT FROM (SELECT p.paid_at FROM public.profiles p WHERE p.id = auth.uid())
+    AND (
+      (SELECT p.whop_user_id FROM public.profiles p WHERE p.id = auth.uid()) IS NULL
+      OR whop_user_id = (SELECT p.whop_user_id FROM public.profiles p WHERE p.id = auth.uid())
+    )
+  );
 
 -- Submissions: Users see own, admins see all
 CREATE POLICY "submissions_select" ON public.submissions FOR SELECT
@@ -203,13 +214,17 @@ CREATE POLICY "notes_delete" ON public.admin_notes FOR DELETE
 
 -- Audit sessions: Users see own, anonymous sessions visible, admins see all
 CREATE POLICY "audit_sessions_select" ON public.audit_sessions FOR SELECT
-  USING (user_id = auth.uid() OR user_id IS NULL OR (SELECT is_admin FROM public.profiles WHERE id = auth.uid()));
+  USING (user_id = auth.uid() OR (SELECT is_admin FROM public.profiles WHERE id = auth.uid()));
 
 CREATE POLICY "audit_sessions_insert" ON public.audit_sessions FOR INSERT
-  WITH CHECK (true);
+  WITH CHECK (
+    user_id = auth.uid()
+    OR (SELECT is_admin FROM public.profiles WHERE id = auth.uid())
+  );
 
 CREATE POLICY "audit_sessions_update" ON public.audit_sessions FOR UPDATE
-  USING (user_id = auth.uid() OR user_id IS NULL);
+  USING (user_id = auth.uid() OR (SELECT is_admin FROM public.profiles WHERE id = auth.uid()))
+  WITH CHECK (user_id = auth.uid() OR (SELECT is_admin FROM public.profiles WHERE id = auth.uid()));
 
 -- ============================================
 -- STORAGE

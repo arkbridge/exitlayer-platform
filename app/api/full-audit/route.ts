@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
 // POST /api/full-audit - Start a full audit
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     const supabase = await createClient()
 
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       .from('audit_sessions')
       .select('*')
       .eq('user_id', user.id)
-      .eq('status', 'submitted')
+      .in('status', ['submitted', 'account_created'])
       .order('created_at', { ascending: false })
       .limit(1)
       .single()

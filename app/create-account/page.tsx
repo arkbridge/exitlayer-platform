@@ -95,14 +95,20 @@ function CreateAccountForm() {
 
           // Link the session to the existing user
           if (signInData.user) {
-            await fetch('/api/audit-session/link-account', {
+            const linkResponse = await fetch('/api/audit-session/link-account', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 session_token: token,
-                user_id: signInData.user.id,
               }),
             })
+
+            if (!linkResponse.ok) {
+              const linkResult = await linkResponse.json().catch(() => ({}))
+              setError(linkResult.error || 'Account created, but we could not attach your audit yet.')
+              setSubmitting(false)
+              return
+            }
           }
 
           // Clear questionnaire localStorage
@@ -119,14 +125,20 @@ function CreateAccountForm() {
 
       // Link session to new user
       if (authData.user) {
-        await fetch('/api/audit-session/link-account', {
+        const linkResponse = await fetch('/api/audit-session/link-account', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             session_token: token,
-            user_id: authData.user.id,
           }),
         })
+
+        if (!linkResponse.ok) {
+          const linkResult = await linkResponse.json().catch(() => ({}))
+          setError(linkResult.error || 'Account created, but we could not attach your audit yet.')
+          setSubmitting(false)
+          return
+        }
       }
 
       // Clear questionnaire localStorage

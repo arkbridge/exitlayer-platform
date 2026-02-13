@@ -29,6 +29,10 @@ export default function ClientPortal() {
         if (!response.ok) {
           if (response.status === 404) {
             setError('Client not found. Please check your link.');
+          } else if (response.status === 401) {
+            setError('Please sign in to view this portal.');
+          } else if (response.status === 403) {
+            setError('You do not have access to this client portal.');
           } else {
             setError('Failed to load your data. Please try again.');
           }

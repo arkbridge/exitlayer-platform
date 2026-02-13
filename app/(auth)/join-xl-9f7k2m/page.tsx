@@ -47,34 +47,18 @@ export default function SignupPage() {
       return
     }
 
-    // Auto-link existing audit_session by email match
+    // Auto-link most recent submitted session for this authenticated email
     if (authData.user) {
       try {
-        // First, check if there's an existing submitted audit session with this email
-        const { data: existingSession } = await supabase
-          .from('audit_sessions')
-          .select('id, session_token')
-          .eq('email', email.toLowerCase().trim())
-          .eq('status', 'submitted')
-          .is('user_id', null)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single()
+        const response = await fetch('/api/audit-session/link-account', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({}),
+        })
 
-        if (existingSession) {
-          // Link the session to the new user account
-          const response = await fetch('/api/audit-session/link-account', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              session_token: existingSession.session_token,
-              user_id: authData.user.id,
-            }),
-          })
-
-          if (response.ok) {
-            console.log('Audit session linked to new account')
-          }
+        if (!response.ok) {
+          const linkResult = await response.json().catch(() => ({}))
+          console.warn('Failed to auto-link audit session:', linkResult?.error)
         }
       } catch (linkError) {
         // Don't fail signup if linking fails - they can still use the dashboard
@@ -89,8 +73,6 @@ export default function SignupPage() {
             .from('profiles')
             .update({
               whop_user_id: whopUserId,
-              access_tier: 'paid',
-              paid_at: new Date().toISOString(),
             })
             .eq('id', authData.user.id)
         } catch (whopError) {

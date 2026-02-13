@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { calculateExitLayerScore, type AuditResponse, type ExitLayerScore } from '@/lib/score-calculator';
 import { generateDiagnosticReport } from '@/lib/diagnostic-report';
 import { generateSystemSpec, type SystemSpecOutput } from '@/lib/system-spec-generator';
 import { generateCallPrep, generateCallPrepMarkdown } from '@/lib/call-prep-generator';
 import { generateSkills, generateSkillsMarkdown } from '@/lib/skill-generator';
 import { createServiceClient } from '@/lib/supabase/service';
+import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
+import { getClientIp, isValidSessionToken, normalizeEmail } from '@/lib/security';
 
 // Constants for ROI calculations
 const SPRINT_COST = 10000; // $10,000 sprint cost
@@ -270,12 +273,106 @@ function generateDiscoveryDocument(spec: SystemSpecOutput): string {
   return lines.join('\n');
 }
 
+const submitPayloadSchema = z
+  .object({
+    full_name: z.string().trim().min(1).max(120).optional(),
+    contact_name: z.string().trim().min(1).max(120).optional(),
+    email: z.string().trim().email().max(254).optional(),
+    contact_email: z.string().trim().email().max(254).optional(),
+    company_name: z.string().trim().min(2).max(160),
+    _analytics: z.unknown().optional(),
+    _analyticsSession: z.unknown().optional(),
+    _session_token: z.string().trim().optional(),
+    _valuation: z.unknown().optional(),
+  })
+  .passthrough()
+  .superRefine((data, ctx) => {
+    if (!data.full_name && !data.contact_name) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['full_name'],
+        message: 'A contact name is required',
+      })
+    }
+    if (!data.email && !data.contact_email) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['email'],
+        message: 'A contact email is required',
+      })
+    }
+  })
+
 export async function POST(request: NextRequest) {
+  const rateLimit = checkRateLimit(`submit:${getClientIp(request.headers)}`, {
+    windowMs: 60 * 60 * 1000,
+    max: 20,
+  })
+  const rateLimitHeaders = getRateLimitHeaders(rateLimit, 20)
+
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { success: false, error: 'Too many submissions. Please try again later.' },
+      { status: 429, headers: rateLimitHeaders }
+    )
+  }
+
   try {
-    const rawData = await request.json();
+    const parsedPayload = submitPayloadSchema.safeParse(await request.json());
+    if (!parsedPayload.success) {
+      return NextResponse.json(
+        { success: false, error: 'Please complete all required fields.' },
+        { status: 400, headers: rateLimitHeaders }
+      )
+    }
 
     // Extract analytics and session data before processing
-    const { _analytics, _analyticsSession, _session_token, ...formData } = rawData;
+    const { _analytics, _analyticsSession, _session_token, _valuation, ...formData } = parsedPayload.data;
+    void _valuation;
+
+    if (_session_token && !isValidSessionToken(_session_token)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid session token.' },
+        { status: 400, headers: rateLimitHeaders }
+      )
+    }
+
+    const submissionEmail = normalizeEmail(
+      (formData.email as string | undefined) || (formData.contact_email as string | undefined)
+    )
+
+    // Store everything in Supabase
+    const supabase = createServiceClient();
+
+    if (_session_token) {
+      const { data: existingSession, error: sessionError } = await supabase
+        .from('audit_sessions')
+        .select('id, email, status')
+        .eq('session_token', _session_token)
+        .maybeSingle()
+
+      if (sessionError || !existingSession) {
+        return NextResponse.json(
+          { success: false, error: 'Session not found.' },
+          { status: 404, headers: rateLimitHeaders }
+        )
+      }
+
+      if (!['in_progress', 'submitted'].includes(existingSession.status)) {
+        return NextResponse.json(
+          { success: false, error: 'Session is no longer editable.' },
+          { status: 400, headers: rateLimitHeaders }
+        )
+      }
+
+      const sessionEmail = normalizeEmail(existingSession.email)
+      if (sessionEmail && submissionEmail && sessionEmail !== submissionEmail) {
+        return NextResponse.json(
+          { success: false, error: 'Session email mismatch.' },
+          { status: 403, headers: rateLimitHeaders }
+        )
+      }
+    }
 
     // Calculate the ExitLayer score
     const score = calculateExitLayerScore(formData as AuditResponse);
@@ -323,9 +420,6 @@ export async function POST(request: NextRequest) {
       },
     };
 
-    // Store everything in Supabase
-    const supabase = createServiceClient();
-
     if (_session_token) {
       // Update existing audit session with generated content
       const { error: updateError } = await supabase
@@ -345,10 +439,14 @@ export async function POST(request: NextRequest) {
           updated_at: new Date().toISOString(),
         })
         .eq('session_token', _session_token)
-        .eq('status', 'in_progress');
+        .in('status', ['in_progress', 'submitted']);
 
       if (updateError) {
         console.error('Failed to update audit session:', updateError);
+        return NextResponse.json(
+          { success: false, error: 'Failed to save your submission.' },
+          { status: 500, headers: rateLimitHeaders }
+        );
       }
     } else {
       // No session token - create a new audit session record
@@ -373,6 +471,10 @@ export async function POST(request: NextRequest) {
 
       if (insertError) {
         console.error('Failed to create audit session:', insertError);
+        return NextResponse.json(
+          { success: false, error: 'Failed to save your submission.' },
+          { status: 500, headers: rateLimitHeaders }
+        );
       }
     }
 
@@ -383,19 +485,22 @@ export async function POST(request: NextRequest) {
     console.log(`Automation coverage: ${systemSpec.summary.automationCoverage}%`);
 
     // Return the score to the client
-    return NextResponse.json({
-      success: true,
-      message: 'Questionnaire submitted successfully',
-      clientFolder: folderName,
-      score,
-      session_token: _session_token || null,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Questionnaire submitted successfully',
+        clientFolder: folderName,
+        score,
+        session_token: _session_token || null,
+      },
+      { headers: rateLimitHeaders }
+    );
 
   } catch (error) {
     console.error('Submission error:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to process submission' },
-      { status: 500 }
+      { status: 500, headers: rateLimitHeaders }
     );
   }
 }
