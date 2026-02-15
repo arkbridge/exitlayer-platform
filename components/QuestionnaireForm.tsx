@@ -1369,12 +1369,12 @@ function StageCTA({ ctaType, valuationGap, potentialValuation }: {
           operators at your level—focused on scale, exits, and what&apos;s next.
         </p>
         <a
-          href="https://cal.com/exit-layer/darwin-group"
+          href="https://cal.com/exit-layer/30min"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-3 px-10 py-5 bg-white text-emerald-900 rounded-full font-medium hover:bg-emerald-50 transition-all text-lg hover:scale-105 shadow-2xl shadow-emerald-900/20"
         >
-          Book a Darwin Group Call
+          Book Your Strategy Call
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
