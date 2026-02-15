@@ -480,9 +480,30 @@ export async function POST(request: NextRequest) {
 
     console.log(`Submission processed: ${folderName}`);
     console.log(`Overall Score: ${score.overall}/100`);
-    console.log(`Systems to build: ${systemSpec.summary.totalSystemsTooBuild}`);
-    console.log(`Skills generated: ${skillsOutput.summary.totalSkills}`);
-    console.log(`Automation coverage: ${systemSpec.summary.automationCoverage}%`);
+
+    // Fire lead data to GHL via inbound webhook (non-blocking)
+    const ghlWebhookUrl = process.env.GHL_WEBHOOK_URL;
+    if (ghlWebhookUrl) {
+      const contactName = (formData.full_name || formData.contact_name || '') as string;
+      const contactEmail = (formData.email || formData.contact_email || '') as string;
+      const stage = score.overall >= 70 ? 3 : score.overall >= 40 ? 2 : score.overall >= 20 ? 1 : 0;
+
+      fetch(ghlWebhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: contactName,
+          email: contactEmail,
+          company_name: formData.company_name,
+          score: score.overall,
+          stage,
+          valuation_current: score.financialMetrics.currentExitValue,
+          valuation_potential: score.financialMetrics.targetExitValue,
+          source: 'exitlayer_audit',
+          submitted_at: new Date().toISOString(),
+        }),
+      }).catch((err) => console.error('GHL webhook failed:', err));
+    }
 
     // Return the score to the client
     return NextResponse.json(

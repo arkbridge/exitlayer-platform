@@ -83,6 +83,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Fire lead capture to GHL (non-blocking) — captures even if they don't finish
+    const ghlWebhookUrl = process.env.GHL_WEBHOOK_URL
+    if (ghlWebhookUrl) {
+      fetch(ghlWebhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name,
+          email: normalizedEmail,
+          company_name,
+          source: 'exitlayer_audit_start',
+          submitted_at: new Date().toISOString(),
+        }),
+      }).catch((err) => console.error('GHL webhook failed:', err))
+    }
+
     return NextResponse.json(
       {
         session_token: sessionToken,
