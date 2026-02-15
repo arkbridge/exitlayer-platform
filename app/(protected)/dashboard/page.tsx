@@ -186,10 +186,12 @@ export default async function DashboardPage() {
               </p>
             </div>
             <a
-              href={`mailto:michael@exitlayer.io?subject=ExitLayer%20Question%20-%20${encodeURIComponent(auditSession.company_name || profile?.company_name || 'My Agency')}`}
+              href="https://cal.com/exit-layer/30min"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-900 hover:bg-emerald-950 text-white font-medium rounded-full transition-colors flex-shrink-0"
             >
-              Contact Us
+              Book a Call
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

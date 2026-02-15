@@ -62,42 +62,29 @@ export default function UpgradePage() {
         {/* Calendar embed */}
         <div className="bg-white rounded-xl border border-[#e5e5e5] p-8">
           <div className="text-center">
-            {process.env.NEXT_PUBLIC_CALENDLY_URL ? (
-              <iframe
-                src={process.env.NEXT_PUBLIC_CALENDLY_URL}
-                width="100%"
-                height="700"
-                frameBorder="0"
-                className="rounded-lg"
-              />
-            ) : (
-              <>
-                <div className="w-16 h-16 rounded-full bg-emerald-900/10 flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-serif font-medium text-[#1a1a1a] mb-3">
-                  Book Your Free Discovery Call
-                </h3>
-                <p className="text-[#666] mb-6 max-w-md mx-auto">
-                  30 minutes with Michael. No pressure, no pitch deck — just a honest
-                  look at where your agency stands and what&apos;s possible.
-                </p>
-                <a
-                  href="mailto:michael@exitlayer.io?subject=ExitLayer%20Discovery%20Call"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-emerald-900 hover:bg-emerald-950 text-white font-medium rounded-full transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  Email Michael to Schedule
-                </a>
-                <p className="text-[#999] text-xs mt-4">
-                  Calendar booking coming soon
-                </p>
-              </>
-            )}
+            <div className="w-16 h-16 rounded-full bg-emerald-900/10 flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-serif font-medium text-[#1a1a1a] mb-3">
+              Book Your Free Discovery Call
+            </h3>
+            <p className="text-[#666] mb-6 max-w-md mx-auto">
+              30 minutes with Michael. No pressure, no pitch deck — just an honest
+              look at where your agency stands and what&apos;s possible.
+            </p>
+            <a
+              href="https://cal.com/exit-layer/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-emerald-900 hover:bg-emerald-950 text-white font-medium rounded-full transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Book a Call with Michael
+            </a>
           </div>
         </div>
 

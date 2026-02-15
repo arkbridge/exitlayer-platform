@@ -452,7 +452,9 @@ export default async function FullAuditResultsPage() {
             </p>
             <div className="flex items-center justify-center gap-4">
               <a
-                href={`mailto:michael@exitlayer.io?subject=ExitLayer%20Implementation%20Call%20-%20${encodeURIComponent(auditSession.company_name || 'My Agency')}`}
+                href="https://cal.com/exit-layer/30min"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white text-emerald-900 font-medium rounded-full hover:bg-emerald-50 transition-colors"
               >
                 Book Implementation Call
