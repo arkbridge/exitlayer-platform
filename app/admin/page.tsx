@@ -12,17 +12,11 @@ function getScoreColor(score: number): string {
 export default async function AdminOverviewPage() {
   const supabase = await createClient()
 
-  // Fetch all submissions with profiles
+  // Fetch all completed quiz sessions (includes pre-payment leads)
   const { data: submissions } = await supabase
-    .from('submissions')
-    .select(`
-      *,
-      profiles:user_id (
-        email,
-        full_name,
-        company_name
-      )
-    `)
+    .from('audit_sessions')
+    .select('*')
+    .eq('status', 'submitted')
     .order('created_at', { ascending: false })
 
   // Calculate stats
@@ -105,10 +99,10 @@ export default async function AdminOverviewPage() {
                     </div>
                     <div>
                       <p className="text-[#1a1a1a] font-medium">
-                        {submission.profiles?.company_name || submission.profiles?.email || 'Unknown'}
+                        {submission.company_name || submission.email || 'Unknown'}
                       </p>
                       <p className="text-[#999] text-sm">
-                        {submission.profiles?.full_name || 'No name'} • {new Date(submission.created_at).toLocaleDateString()}
+                        {submission.full_name || 'No name'} • {new Date(submission.created_at).toLocaleDateString()}
                       </p>
                     </div>
                   </div>

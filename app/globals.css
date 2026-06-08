@@ -13,6 +13,17 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Brand colors for marketing page */
+  --color-brand-950: #0A0A0A;
+  --color-brand-900: #1A1A1A;
+  --color-brand-800: #2A2A2A;
+  --color-brand-border: #D4D3CB;
+  --color-brand-borderHeavy: #A3A299;
+  --color-brand-surface: #FFFFFF;
+  --color-brand-base: #F4F3EE;
+  --color-brand-muted: #5C5C5C;
+  --color-brand-accent: #0A0A0A;
 }
 
 body {
@@ -363,6 +374,90 @@ input:focus, select:focus, textarea:focus {
     transform: scale(1.02);
     box-shadow: 0 6px 25px rgba(6, 95, 70, 0.4);
   }
+}
+
+/* Marketing page styles */
+.marketing-page {
+  --bg: #F4F3EE;
+  --text: #1A1A1A;
+  --muted: #5C5C5C;
+  --border: #D4D3CB;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.editorial-border {
+  border: 1px solid #D4D3CB;
+}
+
+.editorial-shadow {
+  box-shadow: 0 4px 20px -4px rgba(0,0,0,0.05);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.grid-bg {
+  background-size: 60px 60px;
+  background-image:
+    linear-gradient(to right, rgba(212, 211, 203, 0.2) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(212, 211, 203, 0.2) 1px, transparent 1px);
+}
+
+.mono-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #5C5C5C;
+}
+
+.section-marker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.section-marker span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.section-marker .line {
+  height: 1px;
+  background: #D4D3CB;
+  flex-grow: 1;
+  max-width: 60px;
+}
+
+.sticky-doctrine {
+  top: 120px;
+}
+
+.h-hero {
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.h-section {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
 }
 
 /* Hero CTA special glow - white button on dark bg */

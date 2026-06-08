@@ -49,6 +49,23 @@ export async function POST(request: NextRequest) {
       .maybeSingle()
 
     if (existing) {
+      // Fire GHL webhook even on resume (GHL handles dedup)
+      const ghlWebhookUrl = process.env.GHL_WEBHOOK_URL
+      if (ghlWebhookUrl) {
+        fetch(ghlWebhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            full_name,
+            email: normalizedEmail,
+            company_name,
+            source: 'exitlayer_audit_start',
+            resumed: true,
+            submitted_at: new Date().toISOString(),
+          }),
+        }).catch((err) => console.error('GHL webhook failed:', err))
+      }
+
       // Return existing session so they can resume
       return NextResponse.json(
         {

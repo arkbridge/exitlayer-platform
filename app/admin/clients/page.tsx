@@ -21,17 +21,11 @@ const STATUS_LABELS: Record<string, { label: string; color: string }> = {
 export default async function ClientsListPage() {
   const supabase = await createClient()
 
-  // Fetch all submissions with profiles
+  // Fetch all completed quiz sessions (includes pre-payment leads)
   const { data: submissions } = await supabase
-    .from('submissions')
-    .select(`
-      *,
-      profiles:user_id (
-        email,
-        full_name,
-        company_name
-      )
-    `)
+    .from('audit_sessions')
+    .select('*')
+    .eq('status', 'submitted')
     .order('created_at', { ascending: false })
 
   return (
@@ -57,7 +51,7 @@ export default async function ClientsListPage() {
           {submissions && submissions.length > 0 ? (
             submissions.map((submission: any) => {
               const status = STATUS_LABELS[submission.status] || STATUS_LABELS.submitted
-              const revenue = submission.questionnaire_data?.annual_revenue || 0
+              const revenue = submission.form_data?.annual_revenue || submission.score_data?.financialMetrics?.annualRevenue || 0
               const formattedRevenue = revenue >= 1000000
                 ? `$${(revenue / 1000000).toFixed(1)}M`
                 : `$${(revenue / 1000).toFixed(0)}K`
@@ -78,15 +72,15 @@ export default async function ClientsListPage() {
                   </div>
                   <div className="col-span-3">
                     <p className="text-[#1a1a1a] font-medium truncate">
-                      {submission.profiles?.company_name || 'No company'}
+                      {submission.company_name || 'No company'}
                     </p>
                     <p className="text-[#999] text-sm truncate">
-                      {submission.profiles?.email}
+                      {submission.email}
                     </p>
                   </div>
                   <div className="col-span-2">
                     <p className="text-[#666] truncate">
-                      {submission.profiles?.full_name || '—'}
+                      {submission.full_name || '—'}
                     </p>
                   </div>
                   <div className="col-span-2">

@@ -3,7 +3,7 @@ import { updateSession } from '@/lib/supabase/middleware'
 import { sanitizeInternalRedirect } from '@/lib/security'
 
 // Routes that don't require authentication
-const publicRoutes = ['/', '/login', '/join-xl-9f7k2m', '/forgot-password', '/reset-password', '/api/auth/callback', '/questionnaire', '/login/admin', '/create-account', '/resume', '/upgrade', '/checkout', '/free-guide', '/icon', '/apple-icon', '/opengraph-image', '/platform-demo']
+const publicRoutes = ['/', '/audit', '/login', '/join-xl-9f7k2m', '/forgot-password', '/reset-password', '/api/auth/callback', '/questionnaire', '/login/admin', '/create-account', '/resume', '/upgrade', '/checkout', '/free-guide', '/icon', '/apple-icon', '/opengraph-image', '/platform-demo']
 
 // Routes that require admin access
 const adminRoutes = ['/admin']

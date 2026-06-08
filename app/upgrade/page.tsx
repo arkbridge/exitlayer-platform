@@ -90,7 +90,7 @@ export default function UpgradePage() {
 
         {/* Trust */}
         <p className="text-center text-[#999] text-sm mt-8">
-          150+ agency owners assessed. No obligation, no hard sell.
+          Audited hundreds of 7-figure agencies. No obligation, no hard sell.
         </p>
       </div>
     </div>
